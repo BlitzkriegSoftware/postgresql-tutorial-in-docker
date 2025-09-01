@@ -20,7 +20,7 @@ function Get-DockerRunning {
 	[bool]$DockerAlive = $false
 
 	try {
-		$null = Get-Process 'com.docker.backend'
+		$null = Get-Process 'com.docker.backend' -ErrorAction Stop
 		$DockerAlive = $true;
 	} catch {
 		$DockerAlive = $false;
@@ -36,16 +36,12 @@ function Get-DockerRunning {
 Set-StrictMode -Version 2.0
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls -bor [Net.SecurityProtocolType]::Tls11 -bor [Net.SecurityProtocolType]::Tls12
 Push-Location $PSScriptRoot
-#$ScriptUtc = (get-date).ToUniversalTime()
-#[string]$scriptName = $MyInvocation.MyCommand.Name
 
 [bool]$da = Get-DockerRunning
-
 if(! $da) {
 	Write-Error "docker must be running 1st"
 	return 1
 }
-
 
 [int]$PORT=5432
 [string]$NAME='postgressvr'
@@ -74,10 +70,11 @@ docker run -d -e "POSTGRES_USER=${USERNAME}" -e POSTGRES_PASSWORD="${PASSWORD}" 
 
 Write-Output "Waiting for SQL to Start"
 
-Start-Sleep -Seconds 10
+Start-Sleep -Seconds 30
 
 Write-Output "Creating dvdrental from restoredb.sh"
 
+docker exec -it "${NAME}" "sed -i 's/\r$//' ${VOL}/restoredb.sh"
 docker exec -it "${NAME}" "chmod +x ${VOL}/restoredb.sh" 
 docker exec -it "${NAME}" "${VOL}/restoredb.sh" 
 

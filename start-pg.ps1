@@ -63,16 +63,22 @@ $null = (setx POSTGRES_PASSWORD "${PASSWORD}") 2> $null
 $null = (docker stop "${NAME}") 2> $null
 $null = (docker rm "${NAME}") 2> $null
 
-docker pull $IMAGE
+# Ensure clean pull of pinned image
+$null = (docker pull $IMAGE) 2> $null
+
+# Force a clean start
+$pgDir =  Join-Path -Path $dbPath -ChildPath "pgdata"
+$null = (Remove-Item -Path $pgDir -Recurse -Force) 2> $null
 
 docker run -d -e "POSTGRES_USER=${USERNAME}" -e POSTGRES_PASSWORD="${PASSWORD}" -e PGDATA='/var/lib/postgresql/data/pgdata' --name="${NAME}" -p "${PORT}:${PORT}" -v "${dbPath}:${VOL}" postgres
 
 Write-Output "Waiting for SQL to Start"
 
-Start-Sleep -Seconds 30
+Start-Sleep -Seconds 10
 
 Write-Output "Creating dvdrental from restoredb.sh"
 
+docker exec -it "${NAME}" "chmod +x ${VOL}/restoredb.sh" 
 docker exec -it "${NAME}" "${VOL}/restoredb.sh" 
 
 Write-Output "PostgreSql running on ${PORT} as ${USERNAME} with ${PASSWORD}"

@@ -15,6 +15,13 @@
 
 Import-Module Microsoft.PowerShell.Utility
 
+[int]$PORT=5432
+[string]$NAME='postgressvr'
+[string]$IMAGE='postgres:13.22-trixie'
+[string]$USERNAME='postgres'
+[string]$PASSWORD='password123-'
+[string]$VOL="/var/lib/postgresql/data"
+
 function Get-DockerRunning {
 
 	[bool]$DockerAlive = $false
@@ -43,15 +50,6 @@ if(! $da) {
 	return 1
 }
 
-[int]$PORT=5432
-[string]$NAME='postgressvr'
-[string]$IMAGE='postgres:13.22-trixie'
-[string]$USERNAME='postgres'
-[string]$PASSWORD='password123-'
-[string]$VOL="/var/lib/postgresql/data"
-[string]$DBNAME="dvdrental"
-[string]$POSTDB="postgres"
-
 [string]$dbPath = Join-Path -Path $pwd -ChildPath "data"
 
 $null = (setx POSTGRES_USER "${USERNAME}") 2> $null
@@ -69,14 +67,5 @@ $pgDir =  Join-Path -Path $dbPath -ChildPath "pgdata"
 $null = (Remove-Item -Path $pgDir -Recurse -Force) 2> $null
 
 docker run -d -e "POSTGRES_USER=${USERNAME}" -e POSTGRES_PASSWORD="${PASSWORD}" -e PGDATA='/var/lib/postgresql/data/pgdata' --name="${NAME}" -p "${PORT}:${PORT}" -v "${dbPath}:${VOL}" postgres
-
-Write-Output "Waiting for SQL to Start"
-
-Start-Sleep -Seconds 30
-
-Write-Output "Creating dvdrental from sql script"
-
-docker exec -it "${NAME}" "/usr/bin/psql -c CREATE DATABASE ${DBNAME}" "user=${USERNAME} dbname=${POSTDB} password=${PASSWORD}"
-docker exec -it "${NAME}" "/usr/bin/psql -f '/var/lib/postgresql/data/people-table-data.txt'" "user=${USERNAME} dbname=${DBNAME} password=${PASSWORD}" 
 
 Write-Output "PostgreSql running on ${PORT} as ${USERNAME} with ${PASSWORD}"

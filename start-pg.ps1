@@ -49,6 +49,8 @@ if(! $da) {
 [string]$USERNAME='postgres'
 [string]$PASSWORD='password123-'
 [string]$VOL="/var/lib/postgresql/data"
+[string]$DBNAME="dvdrental"
+[string]$POSTDB="postgres"
 
 [string]$dbPath = Join-Path -Path $pwd -ChildPath "data"
 
@@ -72,10 +74,9 @@ Write-Output "Waiting for SQL to Start"
 
 Start-Sleep -Seconds 30
 
-Write-Output "Creating dvdrental from restoredb.sh"
+Write-Output "Creating dvdrental from sql script"
 
-docker exec -it "${NAME}" "sed -i 's/\r$//' ${VOL}/restoredb.sh"
-docker exec -it "${NAME}" "chmod +x ${VOL}/restoredb.sh" 
-docker exec -it "${NAME}" "${VOL}/restoredb.sh" 
+docker exec -it "${NAME}" "/usr/bin/psql -c CREATE DATABASE ${DBNAME}" "user=${USERNAME} dbname=${POSTDB} password=${PASSWORD}"
+docker exec -it "${NAME}" "/usr/bin/psql -f '/var/lib/postgresql/data/people-table-data.txt'" "user=${USERNAME} dbname=${DBNAME} password=${PASSWORD}" 
 
 Write-Output "PostgreSql running on ${PORT} as ${USERNAME} with ${PASSWORD}"

@@ -92,7 +92,49 @@ ALTER SEQUENCE public.incentive_groups_incentive_groups_id_seq OWNER TO postgres
 
 ALTER SEQUENCE public.incentive_groups_incentive_groups_id_seq OWNED BY public.incentive_groups.incentive_groups_id;
 
+-- SEQUENCE: public.incentives_incentive_id_seq
 
+DROP SEQUENCE IF EXISTS public.incentives_incentive_id_seq;
+
+CREATE SEQUENCE IF NOT EXISTS public.incentives_incentive_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+ALTER SEQUENCE public.incentives_incentive_id_seq
+    OWNED BY public.incentives.incentive_id;
+
+ALTER SEQUENCE public.incentives_incentive_id_seq
+    OWNER TO postgres;
+
+-- Table: public.incentives
+
+DROP TABLE IF EXISTS public.incentives;
+
+CREATE TABLE IF NOT EXISTS public.incentives
+(
+    incentive_id bigint NOT NULL DEFAULT nextval('incentives_incentive_id_seq'::regclass),
+    incentive_name character varying(2048) COLLATE pg_catalog."default" NOT NULL,
+    trip_value numeric DEFAULT 0,
+    discount_value numeric DEFAULT 0,
+    inserted_on timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    inserted_by character varying(127) COLLATE pg_catalog."default" DEFAULT 'system'::character varying,
+    is_deleted boolean DEFAULT false,
+    incentive_groups_id bigint NOT NULL,
+    CONSTRAINT incentives_pkey PRIMARY KEY (incentive_id),
+    CONSTRAINT incentive_groups_fk FOREIGN KEY (incentive_groups_id)
+        REFERENCES public.incentive_groups (incentive_groups_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.incentives
+    OWNER to postgres;
 --
 -- Name: market_segments_market_segments_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --

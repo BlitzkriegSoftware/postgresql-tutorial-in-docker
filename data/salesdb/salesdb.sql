@@ -1,0 +1,666 @@
+--
+-- PostgreSQL database dump
+--
+
+-- \restrict rKsK7nDjuMa6K5n0xSfzkal1gFWujiLc6ZQ4izagcJh6FWPit9r9ChO9D0q0tmd
+
+-- Dumped from database version 17.6 (Debian 17.6-1.pgdg13+1)
+-- Dumped by pg_dump version 17.6 (Debian 17.6-1.pgdg13+1)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+SET default_tablespace = '';
+SET default_table_access_method = heap;
+
+--
+-- Name: public; Type: SCHEMA; Schema: -; Owner: pg_database_owner
+--
+
+-- CREATE SCHEMA public;
+-- ALTER SCHEMA public OWNER TO pg_database_owner;
+
+--
+-- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: pg_database_owner
+--
+
+-- COMMENT ON SCHEMA public IS 'standard public schema';
+
+--
+-- Name: companies; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.companies (
+    company_id bigint NOT NULL,
+    company_name character varying(127) NOT NULL,
+    ticker character varying(15) NOT NULL,
+    sector_id bigint,
+    industry_id bigint,
+    market_segments_id bigint,
+    number_of_employees bigint DEFAULT 0,
+    market_cap money DEFAULT 0.0,
+    inserted_on timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    inserted_by character varying(127) DEFAULT 'system'::character varying,
+    is_deleted boolean DEFAULT false
+);
+
+
+ALTER TABLE public.companies OWNER TO postgres;
+
+--
+-- Name: companies_company_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.companies_company_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.companies_company_id_seq OWNER TO postgres;
+
+--
+-- Name: companies_company_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.companies_company_id_seq OWNED BY public.companies.company_id;
+
+
+--
+-- Name: employee_roles; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.employee_roles (
+    employee_roles_id bigint NOT NULL,
+    role_name character varying(127) NOT NULL,
+    inserted_on timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    inserted_by character varying(127) DEFAULT 'system'::character varying,
+    is_deleted boolean DEFAULT false
+);
+
+
+ALTER TABLE public.employee_roles OWNER TO postgres;
+
+--
+-- Name: employee_roles_employee_roles_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.employee_roles_employee_roles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.employee_roles_employee_roles_id_seq OWNER TO postgres;
+
+--
+-- Name: employee_roles_employee_roles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.employee_roles_employee_roles_id_seq OWNED BY public.employee_roles.employee_roles_id;
+
+
+--
+-- Name: employees; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.employees (
+    employee_id bigint NOT NULL,
+    employee_roles_id bigint NOT NULL,
+    name_last character varying(127) NOT NULL,
+    name_first character varying(127) NOT NULL,
+    email character varying(4096) NOT NULL,
+    phone_cell character varying(64),
+    inserted_on timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    inserted_by character varying(127) DEFAULT 'system'::character varying NOT NULL,
+    is_deleted boolean DEFAULT false
+);
+
+
+ALTER TABLE public.employees OWNER TO postgres;
+
+--
+-- Name: employees_employee_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.employees_employee_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.employees_employee_id_seq OWNER TO postgres;
+
+--
+-- Name: employees_employee_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.employees_employee_id_seq OWNED BY public.employees.employee_id;
+
+
+--
+-- Name: employees_employee_roles_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.employees_employee_roles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.employees_employee_roles_id_seq OWNER TO postgres;
+
+--
+-- Name: employees_employee_roles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.employees_employee_roles_id_seq OWNED BY public.employees.employee_roles_id;
+
+
+--
+-- Name: incentive_groups; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.incentive_groups (
+    incentive_groups_id bigint NOT NULL,
+    incentive_groups_name character varying(127) NOT NULL,
+    inserted_on timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    inserted_by character varying(127) DEFAULT 'system'::character varying,
+    is_deleted boolean DEFAULT false
+);
+
+
+ALTER TABLE public.incentive_groups OWNER TO postgres;
+
+--
+-- Name: incentive_groups_incentive_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.incentive_groups_incentive_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.incentive_groups_incentive_groups_id_seq OWNER TO postgres;
+
+--
+-- Name: incentive_groups_incentive_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.incentive_groups_incentive_groups_id_seq OWNED BY public.incentive_groups.incentive_groups_id;
+
+
+--
+-- Name: incentives; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.incentives (
+    incentive_id bigint NOT NULL,
+    incentive_name character varying(2048) NOT NULL,
+    trip_value numeric DEFAULT 0,
+    discount_value numeric DEFAULT 0,
+    inserted_on timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    inserted_by character varying(127) DEFAULT 'system'::character varying,
+    is_deleted boolean DEFAULT false,
+    incentive_groups_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.incentives OWNER TO postgres;
+
+--
+-- Name: incentives_incentive_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.incentives_incentive_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.incentives_incentive_id_seq OWNER TO postgres;
+
+--
+-- Name: incentives_incentive_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.incentives_incentive_id_seq OWNED BY public.incentives.incentive_id;
+
+
+--
+-- Name: industries; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.industries (
+    industry_id bigint NOT NULL,
+    industry_name character varying(127) NOT NULL,
+    inserted_on timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    inserted_by character varying(127) DEFAULT 'system'::character varying,
+    is_deleted boolean DEFAULT false
+);
+
+
+ALTER TABLE public.industries OWNER TO postgres;
+
+--
+-- Name: industries_industry_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.industries_industry_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.industries_industry_id_seq OWNER TO postgres;
+
+--
+-- Name: industries_industry_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.industries_industry_id_seq OWNED BY public.industries.industry_id;
+
+
+--
+-- Name: market_segments_market_segments_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.market_segments_market_segments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.market_segments_market_segments_id_seq OWNER TO postgres;
+
+--
+-- Name: market_segments; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.market_segments (
+    market_segments_id bigint DEFAULT nextval('public.market_segments_market_segments_id_seq'::regclass) NOT NULL,
+    market_segments_name character varying(127) NOT NULL,
+    inserted_on timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    inserted_by character varying(127) DEFAULT 'system'::character varying,
+    is_deleted boolean DEFAULT false
+);
+
+
+ALTER TABLE public.market_segments OWNER TO postgres;
+
+--
+-- Name: product_types_product_types_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.product_types_product_types_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.product_types_product_types_id_seq OWNER TO postgres;
+
+--
+-- Name: product_types; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.product_types (
+    product_types_id bigint DEFAULT nextval('public.product_types_product_types_id_seq'::regclass) NOT NULL,
+    product_types_name character varying(127) NOT NULL,
+    inserted_on timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    inserted_by character varying(127) DEFAULT 'system'::character varying,
+    is_deleted boolean DEFAULT false
+);
+
+
+ALTER TABLE public.product_types OWNER TO postgres;
+
+--
+-- Name: products; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.products (
+    products_id bigint NOT NULL,
+    product_name character varying(127) NOT NULL,
+    product_types_id bigint NOT NULL,
+    product_description text,
+    inserted_on timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    inserted_by character varying(127) DEFAULT 'system'::character varying,
+    is_deleted boolean DEFAULT false
+);
+
+
+ALTER TABLE public.products OWNER TO postgres;
+
+--
+-- Name: products_products_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.products_products_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.products_products_id_seq OWNER TO postgres;
+
+--
+-- Name: products_products_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.products_products_id_seq OWNED BY public.products.products_id;
+
+
+--
+-- Name: regions; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.regions (
+    regions_id bigint NOT NULL,
+    regions_name character varying(127) NOT NULL,
+    inserted_on timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    inserted_by character varying(127) DEFAULT 'system'::character varying,
+    is_deleted boolean DEFAULT false
+);
+
+
+ALTER TABLE public.regions OWNER TO postgres;
+
+--
+-- Name: regions_regions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.regions_regions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.regions_regions_id_seq OWNER TO postgres;
+
+--
+-- Name: regions_regions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.regions_regions_id_seq OWNED BY public.regions.regions_id;
+
+
+--
+-- Name: sectors; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.sectors (
+    sector_id bigint NOT NULL,
+    sector_name character varying(127) NOT NULL,
+    inserted_on timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    inserted_by character varying(127) DEFAULT 'system'::character varying,
+    is_deleted boolean DEFAULT false
+);
+
+
+ALTER TABLE public.sectors OWNER TO postgres;
+
+--
+-- Name: sectors_sector_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.sectors_sector_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.sectors_sector_id_seq OWNER TO postgres;
+
+--
+-- Name: sectors_sector_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.sectors_sector_id_seq OWNED BY public.sectors.sector_id;
+
+
+--
+-- Name: companies company_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.companies ALTER COLUMN company_id SET DEFAULT nextval('public.companies_company_id_seq'::regclass);
+
+
+--
+-- Name: employee_roles employee_roles_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.employee_roles ALTER COLUMN employee_roles_id SET DEFAULT nextval('public.employee_roles_employee_roles_id_seq'::regclass);
+
+
+--
+-- Name: employees employee_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.employees ALTER COLUMN employee_id SET DEFAULT nextval('public.employees_employee_id_seq'::regclass);
+
+
+--
+-- Name: employees employee_roles_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.employees ALTER COLUMN employee_roles_id SET DEFAULT nextval('public.employees_employee_roles_id_seq'::regclass);
+
+
+--
+-- Name: incentive_groups incentive_groups_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.incentive_groups ALTER COLUMN incentive_groups_id SET DEFAULT nextval('public.incentive_groups_incentive_groups_id_seq'::regclass);
+
+
+--
+-- Name: incentives incentive_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.incentives ALTER COLUMN incentive_id SET DEFAULT nextval('public.incentives_incentive_id_seq'::regclass);
+
+
+--
+-- Name: industries industry_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.industries ALTER COLUMN industry_id SET DEFAULT nextval('public.industries_industry_id_seq'::regclass);
+
+
+--
+-- Name: products products_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.products ALTER COLUMN products_id SET DEFAULT nextval('public.products_products_id_seq'::regclass);
+
+
+--
+-- Name: regions regions_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.regions ALTER COLUMN regions_id SET DEFAULT nextval('public.regions_regions_id_seq'::regclass);
+
+
+--
+-- Name: sectors sector_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sectors ALTER COLUMN sector_id SET DEFAULT nextval('public.sectors_sector_id_seq'::regclass);
+
+
+--
+-- Name: companies companies_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.companies
+    ADD CONSTRAINT companies_pkey PRIMARY KEY (company_id);
+
+
+--
+-- Name: employee_roles employee_roles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.employee_roles
+    ADD CONSTRAINT employee_roles_pkey PRIMARY KEY (employee_roles_id);
+
+
+--
+-- Name: employees employees_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.employees
+    ADD CONSTRAINT employees_pkey PRIMARY KEY (employee_id);
+
+
+--
+-- Name: incentive_groups incentive_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.incentive_groups
+    ADD CONSTRAINT incentive_groups_pkey PRIMARY KEY (incentive_groups_id);
+
+
+--
+-- Name: incentives incentives_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.incentives
+    ADD CONSTRAINT incentives_pkey PRIMARY KEY (incentive_id);
+
+
+--
+-- Name: industries industries_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.industries
+    ADD CONSTRAINT industries_pkey PRIMARY KEY (industry_id);
+
+
+--
+-- Name: market_segments market_segments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.market_segments
+    ADD CONSTRAINT market_segments_pkey PRIMARY KEY (market_segments_id);
+
+
+--
+-- Name: product_types product_types_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.product_types
+    ADD CONSTRAINT product_types_pkey PRIMARY KEY (product_types_id);
+
+
+--
+-- Name: products products_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT products_pkey PRIMARY KEY (products_id);
+
+
+--
+-- Name: regions regions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.regions
+    ADD CONSTRAINT regions_pkey PRIMARY KEY (regions_id);
+
+
+--
+-- Name: sectors sectors_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sectors
+    ADD CONSTRAINT sectors_pkey PRIMARY KEY (sector_id);
+
+
+--
+-- Name: employees employees_employee_roles_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.employees
+    ADD CONSTRAINT employees_employee_roles_id_fkey FOREIGN KEY (employee_roles_id) REFERENCES public.employee_roles(employee_roles_id) NOT VALID;
+
+
+--
+-- Name: incentives incentive_groups_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.incentives
+    ADD CONSTRAINT incentive_groups_fk FOREIGN KEY (incentive_groups_id) REFERENCES public.incentive_groups(incentive_groups_id) NOT VALID;
+
+
+--
+-- Name: companies industry_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.companies
+    ADD CONSTRAINT industry_fk FOREIGN KEY (industry_id) REFERENCES public.industries(industry_id) NOT VALID;
+
+
+--
+-- Name: companies market_segments_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.companies
+    ADD CONSTRAINT market_segments_fk FOREIGN KEY (market_segments_id) REFERENCES public.market_segments(market_segments_id) NOT VALID;
+
+
+--
+-- Name: products product_types; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT product_types FOREIGN KEY (product_types_id) REFERENCES public.product_types(product_types_id);
+
+
+--
+-- Name: companies sector_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.companies
+    ADD CONSTRAINT sector_fk FOREIGN KEY (sector_id) REFERENCES public.sectors(sector_id) NOT VALID;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+-- \unrestrict rKsK7nDjuMa6K5n0xSfzkal1gFWujiLc6ZQ4izagcJh6FWPit9r9ChO9D0q0tmd
+

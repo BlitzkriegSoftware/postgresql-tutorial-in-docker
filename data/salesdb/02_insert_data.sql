@@ -132,6 +132,12 @@ INSERT INTO public.incentive_groups(incentive_groups_name) VALUES ('none');     
 INSERT INTO public.incentive_groups(incentive_groups_name) VALUES ('percent');  -- 2
 INSERT INTO public.incentive_groups(incentive_groups_name) VALUES ('quantity'); -- 3
 
+ALTER SEQUENCE public.incentives_incentive_id_seq RESTART WITH 1;
+TRUNCATE TABLE public.incentives RESTART IDENTITY;
+INSERT INTO public.incentives(incentive_groups_id, incentive_name, trip_value, discount_value ) VALUES (1, 'none', 0.0, 0.0);
+INSERT INTO public.incentives(incentive_groups_id, incentive_name, trip_value, discount_value ) VALUES (3, 'simple amount', 10000.0, 100.0);
+INSERT INTO public.incentives(incentive_groups_id, incentive_name, trip_value, discount_value ) VALUES (2, 'simple percent', 5000.0, 3.0);
+
 ALTER SEQUENCE public.employee_roles_employee_roles_id_seq RESTART WITH 1;
 TRUNCATE TABLE public.employee_roles RESTART IDENTITY;
 INSERT INTO public.employee_roles(role_name) VALUES ('sales');              -- 1

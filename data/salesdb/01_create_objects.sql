@@ -166,6 +166,94 @@ CREATE TABLE public.regions (
 
 ALTER TABLE public.regions OWNER TO postgres;
 
+-- Table: public.sectors
+
+-- DROP TABLE IF EXISTS public.sectors;
+
+CREATE TABLE IF NOT EXISTS public.sectors
+(
+    sector_id bigint NOT NULL DEFAULT nextval('sectors_sector_id_seq'::regclass),
+    sector_name character varying(127) COLLATE pg_catalog."default" NOT NULL,
+    inserted_on timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    inserted_by character varying(127) COLLATE pg_catalog."default" DEFAULT 'system'::character varying,
+    is_deleted boolean DEFAULT false,
+    CONSTRAINT sectors_pkey PRIMARY KEY (sector_id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.sectors
+    OWNER to postgres;
+
+-- Table: public.employees
+
+DROP TABLE IF EXISTS public.employees;
+
+CREATE TABLE IF NOT EXISTS public.employees
+(
+    employee_id bigint NOT NULL DEFAULT nextval('employees_employee_id_seq'::regclass),
+    employee_roles_id bigint NOT NULL DEFAULT nextval('employees_employee_roles_id_seq'::regclass),
+    name_last character varying(127) COLLATE pg_catalog."default" NOT NULL,
+    name_first character varying(127) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(4096) COLLATE pg_catalog."default" NOT NULL,
+    phone_cell character varying(64) COLLATE pg_catalog."default",
+    inserted_on timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    inserted_by character varying(127) COLLATE pg_catalog."default" NOT NULL DEFAULT 'system'::character varying,
+    is_deleted boolean DEFAULT false,
+    CONSTRAINT employees_pkey PRIMARY KEY (employee_id),
+    CONSTRAINT employees_employee_roles_id_fkey FOREIGN KEY (employee_roles_id)
+        REFERENCES public.employee_roles (employee_roles_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.employees
+    OWNER to postgres;
+
+-- Table: public.companies
+
+DROP TABLE IF EXISTS public.companies;
+
+CREATE TABLE IF NOT EXISTS public.companies
+(
+    company_id bigint NOT NULL DEFAULT nextval('companies_company_id_seq'::regclass),
+    company_name character varying(127) COLLATE pg_catalog."default" NOT NULL,
+    ticker character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    sector_id bigint,
+    industry_id bigint,
+    market_segments_id bigint,
+    number_of_employees bigint DEFAULT 0,
+    market_cap money DEFAULT 0.0,
+    inserted_on timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    inserted_by character varying(127) COLLATE pg_catalog."default" DEFAULT 'system'::character varying,
+    is_deleted boolean DEFAULT false,
+    CONSTRAINT companies_pkey PRIMARY KEY (company_id),
+    CONSTRAINT industry_fk FOREIGN KEY (industry_id)
+        REFERENCES public.industries (industry_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID,
+    CONSTRAINT market_segments_fk FOREIGN KEY (market_segments_id)
+        REFERENCES public.market_segments (market_segments_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID,
+    CONSTRAINT sector_fk FOREIGN KEY (sector_id)
+        REFERENCES public.sectors (sector_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.companies
+    OWNER to postgres;
+
+
 --
 -- Name: regions_regions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --

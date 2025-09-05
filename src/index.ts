@@ -416,7 +416,7 @@ async function main() {
 
       const max_lines = getRandomNumber(1, MAX_PRODUCTS_PER_ORDER);
       for (let j = 0; j < max_lines; j++) {
-        const product_id = getRandomResult(products, 'product_id');
+        const product_id = getRandomResult(products, 'products_id');
         const quantity = getRandomNumber(1, MAX_QUANTITY);
 
         const sales_order_detail_id = await makeSalesOrderDetails(

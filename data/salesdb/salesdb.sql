@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict H9jtXnTaIfp4gPJ90P51jvRAYgKFQ0XaxXsE6RKqBT5WJiKzHgMgwgqSnc6Bolp
+\restrict rdGNdINa1zgfILTGcxzxcUw3WqoK5r7E6UjNyxD5yW04YWIZEhmJibwgV2dQk63
 
 -- Dumped from database version 17.6 (Debian 17.6-1.pgdg13+1)
 -- Dumped by pg_dump version 17.6 (Debian 17.6-1.pgdg13+1)
@@ -472,7 +472,8 @@ CREATE TABLE public.sales_orders (
     inserted_on timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
     inserted_by character varying(127) DEFAULT 'system'::character varying,
     is_deleted boolean DEFAULT false,
-    sales_order_status_id bigint DEFAULT 1
+    sales_order_status_id bigint DEFAULT 1,
+    region_id bigint DEFAULT 2
 );
 
 
@@ -483,7 +484,7 @@ ALTER TABLE public.sales_orders OWNER TO postgres;
 --
 
 CREATE TABLE public.sales_orders_details (
-    sales_orders_details bigint NOT NULL,
+    sales_orders_details_id bigint NOT NULL,
     sales_order_id bigint NOT NULL,
     quantity numeric DEFAULT 0,
     products_id bigint NOT NULL,
@@ -513,7 +514,7 @@ ALTER SEQUENCE public.sales_orders_details_sales_orders_details_seq OWNER TO pos
 -- Name: sales_orders_details_sales_orders_details_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.sales_orders_details_sales_orders_details_seq OWNED BY public.sales_orders_details.sales_orders_details;
+ALTER SEQUENCE public.sales_orders_details_sales_orders_details_seq OWNED BY public.sales_orders_details.sales_orders_details_id;
 
 
 --
@@ -708,10 +709,10 @@ ALTER TABLE ONLY public.sales_orders ALTER COLUMN sales_order_id SET DEFAULT nex
 
 
 --
--- Name: sales_orders_details sales_orders_details; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: sales_orders_details sales_orders_details_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.sales_orders_details ALTER COLUMN sales_orders_details SET DEFAULT nextval('public.sales_orders_details_sales_orders_details_seq'::regclass);
+ALTER TABLE ONLY public.sales_orders_details ALTER COLUMN sales_orders_details_id SET DEFAULT nextval('public.sales_orders_details_sales_orders_details_seq'::regclass);
 
 
 --
@@ -814,7 +815,7 @@ ALTER TABLE ONLY public.sales_order_status
 --
 
 ALTER TABLE ONLY public.sales_orders_details
-    ADD CONSTRAINT sales_orders_details_pkey PRIMARY KEY (sales_orders_details);
+    ADD CONSTRAINT sales_orders_details_pkey PRIMARY KEY (sales_orders_details_id);
 
 
 --
@@ -914,6 +915,14 @@ ALTER TABLE ONLY public.employees
 
 
 --
+-- Name: sales_orders region_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sales_orders
+    ADD CONSTRAINT region_fk FOREIGN KEY (region_id) REFERENCES public.regions(regions_id) NOT VALID;
+
+
+--
 -- Name: sales_orders sales_order_status_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -941,5 +950,5 @@ ALTER TABLE ONLY public.companies
 -- PostgreSQL database dump complete
 --
 
-\unrestrict H9jtXnTaIfp4gPJ90P51jvRAYgKFQ0XaxXsE6RKqBT5WJiKzHgMgwgqSnc6Bolp
+\unrestrict rdGNdINa1zgfILTGcxzxcUw3WqoK5r7E6UjNyxD5yW04YWIZEhmJibwgV2dQk63
 

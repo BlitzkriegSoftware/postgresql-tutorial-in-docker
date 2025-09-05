@@ -4,8 +4,6 @@
 -- exectute from the salesdb
 --
 
-
-
 -- Dumped from database version 17.6 (Debian 17.6-1.pgdg13+1)
 -- Dumped by pg_dump version 17.6 (Debian 17.6-1.pgdg13+1)
 
@@ -40,7 +38,6 @@ CREATE TABLE public.companies (
     inserted_by character varying(127) DEFAULT 'system'::character varying,
     is_deleted boolean DEFAULT false
 );
-
 
 ALTER TABLE public.companies OWNER TO postgres;
 
@@ -467,7 +464,7 @@ ALTER TABLE public.sales_orders OWNER TO postgres;
 --
 
 CREATE TABLE public.sales_orders_details (
-    sales_orders_details bigint NOT NULL,
+    sales_orders_details_id bigint NOT NULL,
     sales_order_id bigint NOT NULL,
     quantity numeric DEFAULT 0,
     products_id bigint NOT NULL,
@@ -497,7 +494,7 @@ ALTER SEQUENCE public.sales_orders_details_sales_orders_details_seq OWNER TO pos
 -- Name: sales_orders_details_sales_orders_details_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.sales_orders_details_sales_orders_details_seq OWNED BY public.sales_orders_details.sales_orders_details;
+ALTER SEQUENCE public.sales_orders_details_sales_orders_details_seq OWNED BY public.sales_orders_details.sales_orders_details_id;
 
 
 --
@@ -692,10 +689,10 @@ ALTER TABLE ONLY public.sales_orders ALTER COLUMN sales_order_id SET DEFAULT nex
 
 
 --
--- Name: sales_orders_details sales_orders_details; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: sales_orders_details sales_orders_details_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.sales_orders_details ALTER COLUMN sales_orders_details SET DEFAULT nextval('public.sales_orders_details_sales_orders_details_seq'::regclass);
+ALTER TABLE ONLY public.sales_orders_details ALTER COLUMN sales_orders_details_id SET DEFAULT nextval('public.sales_orders_details_sales_orders_details_seq'::regclass);
 
 
 --
@@ -798,7 +795,7 @@ ALTER TABLE ONLY public.sales_order_status
 --
 
 ALTER TABLE ONLY public.sales_orders_details
-    ADD CONSTRAINT sales_orders_details_pkey PRIMARY KEY (sales_orders_details);
+    ADD CONSTRAINT sales_orders_details_pkey PRIMARY KEY (sales_orders_details_id);
 
 
 --
@@ -924,4 +921,3 @@ ALTER TABLE ONLY public.companies
 --
 -- PostgreSQL database dump complete
 --
-

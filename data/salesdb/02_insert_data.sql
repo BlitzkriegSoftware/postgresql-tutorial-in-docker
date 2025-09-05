@@ -129,7 +129,7 @@ INSERT INTO public.incentive_groups(incentive_groups_name) VALUES ('percent');  
 INSERT INTO public.incentive_groups(incentive_groups_name) VALUES ('quantity'); -- 3
 
 ALTER SEQUENCE public.incentives_incentive_id_seq RESTART WITH 1;
-TRUNCATE TABLE public.incentives RESTART IDENTITY;
+TRUNCATE TABLE public.incentives RESTART IDENTITY CASCADE;
 INSERT INTO public.incentives(incentive_groups_id, incentive_name, trip_value, discount_value ) VALUES (1, 'none', 0.0, 0.0);
 INSERT INTO public.incentives(incentive_groups_id, incentive_name, trip_value, discount_value ) VALUES (3, 'simple amount', 10000.0, 100.0);
 INSERT INTO public.incentives(incentive_groups_id, incentive_name, trip_value, discount_value ) VALUES (2, 'simple percent', 5000.0, 3.0);
@@ -340,7 +340,7 @@ INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, p
 
 
 ALTER SEQUENCE public.companies_company_id_seq RESTART WITH 1;
-truncate table public.companies RESTART IDENTITY;
+truncate table public.companies RESTART IDENTITY CASCADE;
 INSERT INTO public.companies (company_name, ticker, sector_id, industry_id, number_of_employees, market_cap, market_segments_id ) values ('Walmart','WMT',57,9,2100000,484852.8,2 );
 INSERT INTO public.companies (company_name, ticker, sector_id, industry_id, number_of_employees, market_cap, market_segments_id ) values ('Amazon','AMZN',57,13,1525000,1873675.8,3 );
 INSERT INTO public.companies (company_name, ticker, sector_id, industry_id, number_of_employees, market_cap, market_segments_id ) values ('Apple','AAPL',63,4,161000,2647973.8,3 );
@@ -543,7 +543,7 @@ INSERT INTO public.companies (company_name, ticker, sector_id, industry_id, numb
 INSERT INTO public.companies (company_name, ticker, sector_id, industry_id, number_of_employees, market_cap, market_segments_id ) values ('Cheniere Energy','LNG',17,16,1605,37851.2,2 );
 
 ALTER SEQUENCE public.sales_order_status_sales_order_status_id_seq RESTART WITH 1;
-truncate table public.sales_order_status RESTART IDENTITY;
+truncate table public.sales_order_status RESTART IDENTITY CASCADE;
 INSERT INTO public.sales_order_status(status_name, description) VALUES ('Quote',' An order has been created but not yet finalized or sent to the customer.');
 INSERT INTO public.sales_order_status(status_name, description) VALUES ('Pending Approval',' The order is waiting for internal approval before it can proceed to fulfillment.');
 INSERT INTO public.sales_order_status(status_name, description) VALUES ('Pending Fulfillment',' The order has been approved and is now awaiting processing, such as picking and packing.');

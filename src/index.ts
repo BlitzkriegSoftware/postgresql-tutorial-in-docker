@@ -200,7 +200,7 @@ function getRandomDate(startDate: Date, endDate: Date): Date {
  * @param {number} indexColumn - Column to use (default 0)
  * @returns {*} - Value
  */
-function getRandomResult(result: pg.QueryResult<any>, indexColumn: number = 0) {
+function getRandomResult(result: pg.QueryResult<any>, indexColumn: string) {
   const max = result.rowCount;
   const index = getRandomNumber(0, max - 1);
   let value = result.rows[index][indexColumn];
@@ -217,7 +217,7 @@ function getBiasedIncentive(incentives: pg.QueryResult<any>): number {
   const ODDS = 901;
   let incentive_id = NONE;
   if (getRandomNumber(1, 1000) > ODDS) {
-    let incentive_id = getRandomResult(incentives, 0);
+    let incentive_id = getRandomResult(incentives, 'incentive_id');
   }
   return incentive_id;
 }
@@ -232,8 +232,8 @@ function getEmployeeRegion(employee: pg.QueryResult<any>): EmployeeRegion {
   const index = getRandomNumber(0, max - 1);
   let row = employee.rows[index];
 
-  const employee_id = row[0];
-  const region_id = row[1];
+  const employee_id = row.employee_id;
+  const region_id = row.region_id;
 
   return {
     EmployeeId: employee_id,
@@ -251,7 +251,7 @@ function getBiasedOrderStatus(orderStatus: pg.QueryResult<any>): number {
   const ODDS = 701;
   let order_status_id = DRAFT;
   if (getRandomNumber(1, 1000) > ODDS) {
-    let order_status_id = getRandomResult(orderStatus, 0);
+    let order_status_id = getRandomResult(orderStatus, 'sales_order_status_id');
   }
   return order_status_id;
 }
@@ -292,10 +292,11 @@ async function makeSalesOrder(
   sales_order_status_id: number,
   region_id: number
 ): Promise<number> {
+  const isoDate = sales_order_date.toISOString();
   const query = {
     text:
-      'INSERT INTO public.sales_orders(employee_id, company_id, incentive_id, sales_order_date, sales_order_status_id, region_id)' +
-      ' VALUES ($1, $2, $3, $4, $5,$ 6);',
+      'INSERT INTO public.sales_orders(employee_id, company_id, incentive_id, isoDate, sales_order_status_id, region_id)' +
+      ' VALUES ($1, $2, $3, $4, $5, $6);',
     values: [
       employee_id, // $1
       company_id, // $2
@@ -387,6 +388,7 @@ async function main() {
     const sales = await getSalesPeople(client);
     const orderStatus = await getSalesStatus(client);
 
+    // Limits
     const MAX_PRODUCTS_PER_ORDER = 31;
     const MAX_QUANTITY = 999.9;
 
@@ -395,7 +397,7 @@ async function main() {
     for (let i = 0; i < commandlineargs.number; i++) {
       const salesDate = getRandomDateForYear(commandlineargs.year);
       const incentive_id = getBiasedIncentive(incentives);
-      const company_id = getRandomResult(companies, 1);
+      const company_id = getRandomResult(companies, 'company_id');
       const sales_order_status_id = getBiasedOrderStatus(orderStatus);
       const cr = getEmployeeRegion(sales);
       const sales_order_id = await makeSalesOrder(

@@ -214,10 +214,10 @@ function getRandomResult(result: pg.QueryResult<any>, indexColumn: string) {
  */
 function getBiasedIncentive(incentives: pg.QueryResult<any>): number {
   const NONE = 1;
-  const ODDS = 901;
+  const ODDS = 701;
   let incentive_id = NONE;
   if (getRandomNumber(1, 1000) > ODDS) {
-    let incentive_id = getRandomResult(incentives, 'incentive_id');
+    incentive_id = getRandomResult(incentives, 'incentive_id');
   }
   return incentive_id;
 }

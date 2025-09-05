@@ -292,22 +292,23 @@ async function makeSalesOrder(
   sales_order_status_id: number,
   region_id: number
 ): Promise<number> {
-  const isoDate = sales_order_date.toISOString();
+  let isoDate = sales_order_date.toISOString();
+  isoDate = isoDate.split('T')[0];
   const query = {
     text:
-      'INSERT INTO public.sales_orders(employee_id, company_id, incentive_id, isoDate, sales_order_status_id, region_id)' +
+      'INSERT INTO public.sales_orders(employee_id, company_id, incentive_id, sales_order_date, sales_order_status_id, region_id)' +
       ' VALUES ($1, $2, $3, $4, $5, $6);',
     values: [
       employee_id, // $1
       company_id, // $2
       incentive_id, // $3
-      sales_order_date, // $4
+      isoDate, // $4
       sales_order_status_id, // $5
       region_id // $6
     ]
   };
   const res = await client.query(query);
-  const sales_order_id = res.rows[0][0];
+  const sales_order_id = res.rows[0].sales_order_id;
   return sales_order_id;
 }
 
@@ -323,16 +324,16 @@ async function makeSalesOrderDetails(
   client: pg.Client,
   sales_order_id: number,
   quantity: number,
-  products_id: Date
+  products_id: number
 ): Promise<number> {
   const query = {
     text:
-      'INSERT INTO public.sales_orders_details( sales_order_id, quantity, products_id)' +
+      'INSERT INTO public.sales_orders_details(sales_order_id, quantity, products_id)' +
       ' VALUES ($1, $2, $3);',
     values: [sales_order_id, quantity, products_id]
   };
   const res = await client.query(query);
-  const sales_order_detail_id = res.rows[0][0];
+  const sales_order_detail_id = res.rows[0].sales_orders_details_id;
   return sales_order_detail_id;
 }
 

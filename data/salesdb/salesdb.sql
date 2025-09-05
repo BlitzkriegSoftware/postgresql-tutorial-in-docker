@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict ycR22qBwQMhHyAkAibMafVHs8GOgg6CwrJjAsgi9cszmI5rGww4007UasG9lPTX
+\restrict H9jtXnTaIfp4gPJ90P51jvRAYgKFQ0XaxXsE6RKqBT5WJiKzHgMgwgqSnc6Bolp
 
 -- Dumped from database version 17.6 (Debian 17.6-1.pgdg13+1)
 -- Dumped by pg_dump version 17.6 (Debian 17.6-1.pgdg13+1)
@@ -423,6 +423,121 @@ ALTER SEQUENCE public.regions_regions_id_seq OWNED BY public.regions.regions_id;
 
 
 --
+-- Name: sales_order_status; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.sales_order_status (
+    sales_order_status_id bigint NOT NULL,
+    status_name character varying(2048) NOT NULL,
+    inserted_on timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    inserted_by character varying(127) DEFAULT 'system'::character varying,
+    is_deleted boolean DEFAULT false,
+    description character varying(2048)
+);
+
+
+ALTER TABLE public.sales_order_status OWNER TO postgres;
+
+--
+-- Name: sales_order_status_sales_order_status_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.sales_order_status_sales_order_status_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.sales_order_status_sales_order_status_id_seq OWNER TO postgres;
+
+--
+-- Name: sales_order_status_sales_order_status_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.sales_order_status_sales_order_status_id_seq OWNED BY public.sales_order_status.sales_order_status_id;
+
+
+--
+-- Name: sales_orders; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.sales_orders (
+    sales_order_id bigint NOT NULL,
+    employee_id bigint NOT NULL,
+    company_id bigint NOT NULL,
+    incentive_id bigint DEFAULT 1,
+    sales_order_date date DEFAULT now() NOT NULL,
+    inserted_on timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    inserted_by character varying(127) DEFAULT 'system'::character varying,
+    is_deleted boolean DEFAULT false,
+    sales_order_status_id bigint DEFAULT 1
+);
+
+
+ALTER TABLE public.sales_orders OWNER TO postgres;
+
+--
+-- Name: sales_orders_details; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.sales_orders_details (
+    sales_orders_details bigint NOT NULL,
+    sales_order_id bigint NOT NULL,
+    quantity numeric DEFAULT 0,
+    products_id bigint NOT NULL,
+    created_on timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    created_by character varying(127) DEFAULT 'system'::character varying,
+    is_deleted boolean DEFAULT false
+);
+
+
+ALTER TABLE public.sales_orders_details OWNER TO postgres;
+
+--
+-- Name: sales_orders_details_sales_orders_details_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.sales_orders_details_sales_orders_details_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.sales_orders_details_sales_orders_details_seq OWNER TO postgres;
+
+--
+-- Name: sales_orders_details_sales_orders_details_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.sales_orders_details_sales_orders_details_seq OWNED BY public.sales_orders_details.sales_orders_details;
+
+
+--
+-- Name: sales_orders_sales_order_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.sales_orders_sales_order_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.sales_orders_sales_order_id_seq OWNER TO postgres;
+
+--
+-- Name: sales_orders_sales_order_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.sales_orders_sales_order_id_seq OWNED BY public.sales_orders.sales_order_id;
+
+
+--
 -- Name: sectors; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -579,6 +694,27 @@ ALTER TABLE ONLY public.regions ALTER COLUMN regions_id SET DEFAULT nextval('pub
 
 
 --
+-- Name: sales_order_status sales_order_status_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sales_order_status ALTER COLUMN sales_order_status_id SET DEFAULT nextval('public.sales_order_status_sales_order_status_id_seq'::regclass);
+
+
+--
+-- Name: sales_orders sales_order_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sales_orders ALTER COLUMN sales_order_id SET DEFAULT nextval('public.sales_orders_sales_order_id_seq'::regclass);
+
+
+--
+-- Name: sales_orders_details sales_orders_details; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sales_orders_details ALTER COLUMN sales_orders_details SET DEFAULT nextval('public.sales_orders_details_sales_orders_details_seq'::regclass);
+
+
+--
 -- Name: sectors sector_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -666,6 +802,30 @@ ALTER TABLE ONLY public.regions
 
 
 --
+-- Name: sales_order_status sales_order_status_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sales_order_status
+    ADD CONSTRAINT sales_order_status_pkey PRIMARY KEY (sales_order_status_id);
+
+
+--
+-- Name: sales_orders_details sales_orders_details_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sales_orders_details
+    ADD CONSTRAINT sales_orders_details_pkey PRIMARY KEY (sales_orders_details);
+
+
+--
+-- Name: sales_orders sales_orders_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sales_orders
+    ADD CONSTRAINT sales_orders_pkey PRIMARY KEY (sales_order_id);
+
+
+--
 -- Name: sectors sectors_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -674,11 +834,35 @@ ALTER TABLE ONLY public.sectors
 
 
 --
+-- Name: sales_orders company_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sales_orders
+    ADD CONSTRAINT company_fk FOREIGN KEY (company_id) REFERENCES public.companies(company_id) NOT VALID;
+
+
+--
+-- Name: sales_orders employee_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sales_orders
+    ADD CONSTRAINT employee_fk FOREIGN KEY (employee_id) REFERENCES public.employees(employee_id) NOT VALID;
+
+
+--
 -- Name: employees employees_employee_roles_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.employees
     ADD CONSTRAINT employees_employee_roles_id_fkey FOREIGN KEY (employee_roles_id) REFERENCES public.employee_roles(employee_roles_id) NOT VALID;
+
+
+--
+-- Name: sales_orders incentive_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sales_orders
+    ADD CONSTRAINT incentive_fk FOREIGN KEY (incentive_id) REFERENCES public.incentives(incentive_id) NOT VALID;
 
 
 --
@@ -714,11 +898,35 @@ ALTER TABLE ONLY public.products
 
 
 --
+-- Name: sales_orders_details products_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sales_orders_details
+    ADD CONSTRAINT products_fk FOREIGN KEY (products_id) REFERENCES public.products(products_id) NOT VALID;
+
+
+--
 -- Name: employees region_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.employees
     ADD CONSTRAINT region_fk FOREIGN KEY (region_id) REFERENCES public.regions(regions_id) NOT VALID;
+
+
+--
+-- Name: sales_orders sales_order_status_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sales_orders
+    ADD CONSTRAINT sales_order_status_fk FOREIGN KEY (sales_order_status_id) REFERENCES public.sales_order_status(sales_order_status_id) NOT VALID;
+
+
+--
+-- Name: sales_orders_details sales_orders_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sales_orders_details
+    ADD CONSTRAINT sales_orders_fk FOREIGN KEY (sales_order_id) REFERENCES public.sales_orders(sales_order_id) NOT VALID;
 
 
 --
@@ -733,5 +941,5 @@ ALTER TABLE ONLY public.companies
 -- PostgreSQL database dump complete
 --
 
-\unrestrict ycR22qBwQMhHyAkAibMafVHs8GOgg6CwrJjAsgi9cszmI5rGww4007UasG9lPTX
+\unrestrict H9jtXnTaIfp4gPJ90P51jvRAYgKFQ0XaxXsE6RKqBT5WJiKzHgMgwgqSnc6Bolp
 

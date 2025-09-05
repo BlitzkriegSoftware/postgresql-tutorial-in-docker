@@ -541,3 +541,19 @@ INSERT INTO public.companies (company_name, ticker, sector_id, industry_id, numb
 INSERT INTO public.companies (company_name, ticker, sector_id, industry_id, number_of_employees, market_cap, market_segments_id ) values ('Kimberly-Clark','KMB',34,11,41000,43579.9,2 );
 INSERT INTO public.companies (company_name, ticker, sector_id, industry_id, number_of_employees, market_cap, market_segments_id ) values ('Waste Management','WM',7,21,48000,85600.6,2 );
 INSERT INTO public.companies (company_name, ticker, sector_id, industry_id, number_of_employees, market_cap, market_segments_id ) values ('Cheniere Energy','LNG',17,16,1605,37851.2,2 );
+
+ALTER SEQUENCE public.sales_order_status_sales_order_status_id_seq RESTART WITH 1;
+truncate table public.sales_order_status RESTART IDENTITY;
+INSERT INTO public.sales_order_status(status_name, description) VALUES ('Quote',' An order has been created but not yet finalized or sent to the customer.');
+INSERT INTO public.sales_order_status(status_name, description) VALUES ('Pending Approval',' The order is waiting for internal approval before it can proceed to fulfillment.');
+INSERT INTO public.sales_order_status(status_name, description) VALUES ('Pending Fulfillment',' The order has been approved and is now awaiting processing, such as picking and packing.');
+INSERT INTO public.sales_order_status(status_name, description) VALUES ('On Hold',' The order is temporarily paused, often due to an issue like insufficient stock or a credit check.');
+INSERT INTO public.sales_order_status(status_name, description) VALUES ('Partially Fulfilled',' Some items from the order have been shipped, but others are still pending.');
+INSERT INTO public.sales_order_status(status_name, description) VALUES ('Fulfilled',' All items in the sales order have been fully shipped or delivered to the customer.');
+INSERT INTO public.sales_order_status(status_name, description) VALUES ('Invoiced',' The order is waiting to be billed or has already been invoiced to the customer.');
+INSERT INTO public.sales_order_status(status_name, description) VALUES ('Closed',' The order has been fully fulfilled and processed, meaning it will not be processed further.');
+INSERT INTO public.sales_order_status(status_name, description) VALUES ('Canceled',' The order has been terminated and cannot be recovered; a new order may need to be created if required.');
+
+
+
+

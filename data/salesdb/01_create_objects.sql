@@ -39,6 +39,7 @@ CREATE TABLE public.companies (
     is_deleted boolean DEFAULT false
 );
 
+
 ALTER TABLE public.companies OWNER TO postgres;
 
 --
@@ -453,7 +454,8 @@ CREATE TABLE public.sales_orders (
     inserted_on timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
     inserted_by character varying(127) DEFAULT 'system'::character varying,
     is_deleted boolean DEFAULT false,
-    sales_order_status_id bigint DEFAULT 1
+    sales_order_status_id bigint DEFAULT 1,
+    region_id bigint DEFAULT 2
 );
 
 
@@ -610,6 +612,29 @@ CREATE VIEW public.vw_products AS
 
 
 ALTER VIEW public.vw_products OWNER TO postgres;
+
+--
+-- Name: vw_sales_orders; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW public.vw_sales_orders AS
+ SELECT sod.sales_order_id,
+    sod.sales_order_date,
+    sos.status_name,
+    comp.company_name,
+    comp.ticker,
+    reg.regions_name,
+    emp.email AS sales_person,
+    ince.incentive_name
+   FROM (((((public.sales_orders sod
+     JOIN public.sales_order_status sos ON ((sod.sales_order_status_id = sos.sales_order_status_id)))
+     JOIN public.companies comp ON ((sod.company_id = comp.company_id)))
+     JOIN public.regions reg ON ((sod.region_id = reg.regions_id)))
+     JOIN public.incentives ince ON ((sod.incentive_id = ince.incentive_id)))
+     JOIN public.employees emp ON ((sod.employee_id = emp.employee_id)));
+
+
+ALTER VIEW public.vw_sales_orders OWNER TO postgres;
 
 --
 -- Name: companies company_id; Type: DEFAULT; Schema: public; Owner: postgres
@@ -891,6 +916,14 @@ ALTER TABLE ONLY public.sales_orders_details
 --
 
 ALTER TABLE ONLY public.employees
+    ADD CONSTRAINT region_fk FOREIGN KEY (region_id) REFERENCES public.regions(regions_id) NOT VALID;
+
+
+--
+-- Name: sales_orders region_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sales_orders
     ADD CONSTRAINT region_fk FOREIGN KEY (region_id) REFERENCES public.regions(regions_id) NOT VALID;
 
 

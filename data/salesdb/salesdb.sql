@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict rdGNdINa1zgfILTGcxzxcUw3WqoK5r7E6UjNyxD5yW04YWIZEhmJibwgV2dQk63
+\restrict dFZxu84VVw95VXIpctUelGHuQirhopF6WYs7bNNJ3pOuUgEasgkwhCh2HDk11YM
 
 -- Dumped from database version 17.6 (Debian 17.6-1.pgdg13+1)
 -- Dumped by pg_dump version 17.6 (Debian 17.6-1.pgdg13+1)
@@ -632,6 +632,29 @@ CREATE VIEW public.vw_products AS
 ALTER VIEW public.vw_products OWNER TO postgres;
 
 --
+-- Name: vw_sales_orders; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW public.vw_sales_orders AS
+ SELECT sod.sales_order_id,
+    sod.sales_order_date,
+    sos.status_name,
+    comp.company_name,
+    comp.ticker,
+    reg.regions_name,
+    emp.email AS sales_person,
+    ince.incentive_name
+   FROM (((((public.sales_orders sod
+     JOIN public.sales_order_status sos ON ((sod.sales_order_status_id = sos.sales_order_status_id)))
+     JOIN public.companies comp ON ((sod.company_id = comp.company_id)))
+     JOIN public.regions reg ON ((sod.region_id = reg.regions_id)))
+     JOIN public.incentives ince ON ((sod.incentive_id = ince.incentive_id)))
+     JOIN public.employees emp ON ((sod.employee_id = emp.employee_id)));
+
+
+ALTER VIEW public.vw_sales_orders OWNER TO postgres;
+
+--
 -- Name: companies company_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -950,5 +973,5 @@ ALTER TABLE ONLY public.companies
 -- PostgreSQL database dump complete
 --
 
-\unrestrict rdGNdINa1zgfILTGcxzxcUw3WqoK5r7E6UjNyxD5yW04YWIZEhmJibwgV2dQk63
+\unrestrict dFZxu84VVw95VXIpctUelGHuQirhopF6WYs7bNNJ3pOuUgEasgkwhCh2HDk11YM
 

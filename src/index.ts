@@ -360,7 +360,7 @@ async function main() {
       describe: 'How many sales to make',
       type: 'number',
       demandOption: false,
-      default: 100
+      default: 500
     })
     .option('y', {
       alias: 'year',

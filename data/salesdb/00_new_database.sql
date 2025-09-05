@@ -1,5 +1,7 @@
 --
 -- Create salesdb
+-- 00_new_database.sql
+-- Execute from the postgres db
 --
 CREATE DATABASE salesdb
     WITH

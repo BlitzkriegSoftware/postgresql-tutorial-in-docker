@@ -1,9 +1,10 @@
-/*
-    Lookup Tables + Their Data
-*/
+--
+-- 02_insert_data.sql
+-- execute from the salesdb database
+-- 
 
 ALTER SEQUENCE public.industries_industry_id_seq RESTART WITH 1;
-TRUNCATE TABLE public.industries RESTART IDENTITY;
+TRUNCATE TABLE public.industries RESTART IDENTITY CASCADE;
 INSERT INTO public.industries(industry_name) VALUES ('Aerospace & Defense');
 INSERT INTO public.industries(industry_name) VALUES ('Apparel');
 INSERT INTO public.industries(industry_name) VALUES ('Business Services');
@@ -28,7 +29,7 @@ INSERT INTO public.industries(industry_name) VALUES ('Transportation');
 INSERT INTO public.industries(industry_name) VALUES ('Wholesalers');
 
 ALTER SEQUENCE public.sectors_sector_id_seq RESTART WITH 1;
-TRUNCATE TABLE public.sectors RESTART IDENTITY;
+TRUNCATE TABLE public.sectors RESTART IDENTITY CASCADE;
 INSERT INTO public.sectors(sector_name) values ('Advertising, marketing');
 INSERT INTO public.sectors(sector_name) values ('Aerospace & Defense');
 INSERT INTO public.sectors(sector_name) values ('Airlines');
@@ -106,28 +107,23 @@ INSERT INTO public.sectors(sector_name) values ('Wholesalers: Electronics and Of
 INSERT INTO public.sectors(sector_name) values ('Wholesalers: Food and Grocery');
 INSERT INTO public.sectors(sector_name) values ('Wholesalers: Health Care');
 
-
-
 ALTER SEQUENCE public.regions_regions_id_seq RESTART WITH 1;
-TRUNCATE TABLE public.regions RESTART IDENTITY;
+TRUNCATE TABLE public.regions RESTART IDENTITY CASCADE;
 INSERT INTO public.regions(regions_name) VALUES ('Africa');     -- 1
 INSERT INTO public.regions(regions_name) VALUES ('Americas');   -- 2
 INSERT INTO public.regions(regions_name) VALUES ('Asia');       -- 3
 INSERT INTO public.regions(regions_name) VALUES ('Europe');     -- 4
 INSERT INTO public.regions(regions_name) VALUES ('Oceania');    -- 5
 
-
-
-
 ALTER SEQUENCE public.market_segments_market_segments_id_seq RESTART WITH 1;
-TRUNCATE TABLE public.market_segments RESTART IDENTITY;
+TRUNCATE TABLE public.market_segments RESTART IDENTITY CASCADE;
 INSERT INTO public.market_segments(market_segments_name, is_deleted) VALUES ('unknown', true); -- 1
 INSERT INTO public.market_segments(market_segments_name) VALUES ('smb');    -- 2
 INSERT INTO public.market_segments(market_segments_name) VALUES ('ent');    -- 3
 INSERT INTO public.market_segments(market_segments_name) VALUES ('gov');    -- 4
 
 ALTER SEQUENCE public.incentive_groups_incentive_groups_id_seq RESTART WITH 1;
-TRUNCATE TABLE public.incentive_groups RESTART IDENTITY;
+TRUNCATE TABLE public.incentive_groups RESTART IDENTITY CASCADE;
 INSERT INTO public.incentive_groups(incentive_groups_name) VALUES ('none');     -- 1
 INSERT INTO public.incentive_groups(incentive_groups_name) VALUES ('percent');  -- 2
 INSERT INTO public.incentive_groups(incentive_groups_name) VALUES ('quantity'); -- 3
@@ -139,7 +135,7 @@ INSERT INTO public.incentives(incentive_groups_id, incentive_name, trip_value, d
 INSERT INTO public.incentives(incentive_groups_id, incentive_name, trip_value, discount_value ) VALUES (2, 'simple percent', 5000.0, 3.0);
 
 ALTER SEQUENCE public.employee_roles_employee_roles_id_seq RESTART WITH 1;
-TRUNCATE TABLE public.employee_roles RESTART IDENTITY;
+TRUNCATE TABLE public.employee_roles RESTART IDENTITY CASCADE;
 INSERT INTO public.employee_roles(role_name) VALUES ('sales');              -- 1
 INSERT INTO public.employee_roles(role_name) VALUES ('marketing');          -- 2
 INSERT INTO public.employee_roles(role_name) VALUES ('support');            -- 3
@@ -157,171 +153,194 @@ INSERT INTO public.product_types(product_types_name) VALUES ('Big Data and Analy
 INSERT INTO public.product_types(product_types_name) VALUES ('AI and Machine Learning');    -- 5
 INSERT INTO public.product_types(product_types_name) VALUES ('Identity and Security');      -- 6
 
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (1, 'Compute Engine',' Virtual machines in the cloud.',);
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (1, 'App Engine',' Platform as a Service (PaaS) for building scalable web applications.',);
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (1, 'Kubernetes Engine',' Managed Kubernetes service for container orchestration.',);
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (2, 'Cloud Storage',' Scalable object storage for unstructured data.',);
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (2, 'Cloud SQL',' Fully managed relational database service.',);
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (2, 'Cloud Spanner',' Globally distributed, horizontally scalable relational database.',);
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (2, 'Cloud Bigtable',' NoSQL wide-column database for massive scalability.',);
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (2, 'Firestore',' Serverless, NoSQL document database.',);
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (2, 'Memorystore',' Fully managed in-memory data store.',);
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (3, 'Virtual Private Cloud (VPC)',' Networking infrastructure for creating isolated virtual networks.',);
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (3, 'Cloud Load Balancing',' Load balancing service for distributing traffic across instances and regions.',);
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (3, 'Cloud CDN',' Content Delivery Network for fast content delivery.',);
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (3, 'Cloud DNS',' Managed Domain Name System service.',);
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (4, 'BigQuery',' Serverless, fully managed data warehouse for analytics.',);
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (4, 'Dataproc',' Managed Apache Spark and Hadoop service.',);
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (4, 'Dataflow',' Serverless data processing service for batch and streaming data.',);
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (4, 'Pub/Sub',' Messaging service for building event-driven systems.',);
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (4, 'Data Catalog',' Fully managed and scalable metadata management service.',);
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (5, 'AI Platform',' End-to-end platform for building, training, and deploying ML models.',);
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (5, 'AutoML',' Suite of services for automating machine learning model development.',);
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (5, 'Vision AI',' Pre-trained models for image recognition and analysis.',);
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (5, 'Natural Language AI',' Pre-trained models for text and language processing.',);
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (5, 'Speech-to-Text and Text-to-Speech',' Speech recognition and synthesis capabilities.',);
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (6, 'Cloud IAM',' Identity and Access Management for managing access control.',);
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (6, 'Cloud Identity-Aware Proxy',' Access control and security for web applications.',);
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (6, 'Cloud Key Management Service',' Key management and encryption service.',);
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (6, 'Security Command Center',' Security and risk management platform.',);
-INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (6, 'Cloud Armor',' Web application firewall and DDoS protection.',);
+ALTER SEQUENCE public.products_products_id_seq RESTART WITH 1;
+truncate table public.products RESTART IDENTITY CASCADE;
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (1, 'Compute Engine',' Virtual machines in the cloud.');
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (1, 'App Engine',' Platform as a Service (PaaS) for building scalable web applications.');
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (1, 'Kubernetes Engine',' Managed Kubernetes service for container orchestration.');
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (2, 'Cloud Storage',' Scalable object storage for unstructured data.');
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (2, 'Cloud SQL',' Fully managed relational database service.');
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (2, 'Cloud Spanner',' Globally distributed, horizontally scalable relational database.');
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (2, 'Cloud Bigtable',' NoSQL wide-column database for massive scalability.');
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (2, 'Firestore',' Serverless, NoSQL document database.');
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (2, 'Memorystore',' Fully managed in-memory data store.');
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (3, 'Virtual Private Cloud (VPC)',' Networking infrastructure for creating isolated virtual networks.');
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (3, 'Cloud Load Balancing',' Load balancing service for distributing traffic across instances and regions.');
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (3, 'Cloud CDN',' Content Delivery Network for fast content delivery.');
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (3, 'Cloud DNS',' Managed Domain Name System service.');
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (4, 'BigQuery',' Serverless, fully managed data warehouse for analytics.');
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (4, 'Dataproc',' Managed Apache Spark and Hadoop service.');
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (4, 'Dataflow',' Serverless data processing service for batch and streaming data.');
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (4, 'Pub/Sub',' Messaging service for building event-driven systems.');
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (4, 'Data Catalog',' Fully managed and scalable metadata management service.');
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (5, 'AI Platform',' End-to-end platform for building, training, and deploying ML models.');
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (5, 'AutoML',' Suite of services for automating machine learning model development.');
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (5, 'Vision AI',' Pre-trained models for image recognition and analysis.');
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (5, 'Natural Language AI',' Pre-trained models for text and language processing.');
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (5, 'Speech-to-Text and Text-to-Speech',' Speech recognition and synthesis capabilities.');
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (6, 'Cloud IAM',' Identity and Access Management for managing access control.');
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (6, 'Cloud Identity-Aware Proxy',' Access control and security for web applications.');
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (6, 'Cloud Key Management Service',' Key management and encryption service.');
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (6, 'Security Command Center',' Security and risk management platform.');
+INSERT INTO public.products(product_types_id, product_name, product_description) VALUES (6, 'Cloud Armor',' Web application firewall and DDoS protection.');
 
+ALTER SEQUENCE public.employees_employee_id_seq RESTART WITH 1;
 truncate table public.employees RESTART IDENTITY CASCADE;
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (1, 'Margaret','Wilson' ,'Margaret.Wilson@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (1, 'Daniel','Hodges' ,'Daniel.Hodges@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (1, 'Eve','Roach' ,'Eve.Roach@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (1, 'Caspian','Gould' ,'Caspian.Gould@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (1, 'Violeta','Morales' ,'Violeta.Morales@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (1, 'Aaron','Sweeney' ,'Aaron.Sweeney@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (1, 'Yara','Carroll' ,'Yara.Carroll@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (1, 'Oscar','Sexton' ,'Oscar.Sexton@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (1, 'Ellen','Thornton' ,'Ellen.Thornton@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (1, 'Malik','Davis' ,'Malik.Davis@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (1, 'Mia','Mathis' ,'Mia.Mathis@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (1, 'Gustavo','Wilcox' ,'Gustavo.Wilcox@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (1, 'Ashlyn','Grimes' ,'Ashlyn.Grimes@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (1, 'Harlan','Gutierrez' ,'Harlan.Gutierrez@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (1, 'Savannah','Perez' ,'Savannah.Perez@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (1, 'Owen','Marshall' ,'Owen.Marshall@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (1, 'Adalyn','Harrington' ,'Adalyn.Harrington@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (1, 'Omari','Maldonado' ,'Omari.Maldonado@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (1, 'Elaina','Vincent' ,'Elaina.Vincent@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (1, 'Aarav','Escobar' ,'Aarav.Escobar@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (2, 'Juelz','Moon' ,'Juelz.Moon@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (2, 'Naya','Contreras' ,'Naya.Contreras@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (2, 'Emilio','Cook' ,'Emilio.Cook@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (2, 'Aaliyah','Lamb' ,'Aaliyah.Lamb@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (2, 'Kaysen','White' ,'Kaysen.White@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (2, 'Layla','Anderson' ,'Layla.Anderson@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (2, 'Jacob','Swanson' ,'Jacob.Swanson@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (2, 'Helen','House' ,'Helen.House@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (2, 'Yehuda','Salas' ,'Yehuda.Salas@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (2, 'Amber','Landry' ,'Amber.Landry@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (2, 'Jaxx','Ashley' ,'Jaxx.Ashley@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (2, 'Khalani','Mayo' ,'Khalani.Mayo@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (2, 'Jericho','Lloyd' ,'Jericho.Lloyd@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (2, 'Emely','Page' ,'Emely.Page@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (2, 'Pablo','Patton' ,'Pablo.Patton@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (2, 'Lorelei','Knox' ,'Lorelei.Knox@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (2, 'Valentin','Ochoa' ,'Valentin.Ochoa@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (2, 'Luciana','Stokes' ,'Luciana.Stokes@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (2, 'Santana','Bryan' ,'Santana.Bryan@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (2, 'Meredith','Dennis' ,'Meredith.Dennis@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (2, 'Emanuel','Campbell' ,'Emanuel.Campbell@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (2, 'Addison','Blackwell' ,'Addison.Blackwell@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (2, 'Marcellus','Maldonado' ,'Marcellus.Maldonado@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (2, 'Elaina','Allen' ,'Elaina.Allen@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (2, 'Carter','Montes' ,'Carter.Montes@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (2, 'Roselyn','Enriquez' ,'Roselyn.Enriquez@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (2, 'Elisha','Waters' ,'Elisha.Waters@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (3, 'Erin','Benjamin' ,'Erin.Benjamin@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (3, 'Kyro','Steele' ,'Kyro.Steele@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (3, 'Rylie','Schroeder' ,'Rylie.Schroeder@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (3, 'Izaiah','Mosley' ,'Izaiah.Mosley@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (3, 'Zaniyah','Valdez' ,'Zaniyah.Valdez@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (3, 'Kyler','Rosales' ,'Kyler.Rosales@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (3, 'Kinley','Griffith' ,'Kinley.Griffith@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (3, 'Franklin','Gates' ,'Franklin.Gates@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (3, 'Melina','Lawson' ,'Melina.Lawson@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (3, 'Lane','Aguirre' ,'Lane.Aguirre@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (3, 'Ariah','McKenzie' ,'Ariah.McKenzie@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (3, 'Scott','Aguilar' ,'Scott.Aguilar@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'Josie','Blackwell' ,'Josie.Blackwell@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'Marcellus','Wilkinson' ,'Marcellus.Wilkinson@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'Siena','Murillo' ,'Siena.Murillo@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'Lance','Portillo' ,'Lance.Portillo@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'Nathalie','Molina' ,'Nathalie.Molina@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'Prince','Garza' ,'Prince.Garza@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'River','Tyler' ,'River.Tyler@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'Emmitt','May' ,'Emmitt.May@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'Adriana','Glass' ,'Adriana.Glass@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'Allan','Richards' ,'Allan.Richards@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'Trinity','Glass' ,'Trinity.Glass@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'Allan','Knox' ,'Allan.Knox@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'Kallie','Lin' ,'Kallie.Lin@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'Conor','Pham' ,'Conor.Pham@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'Everleigh','Moore' ,'Everleigh.Moore@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'Levi','Sampson' ,'Levi.Sampson@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'Meilani','Dixon' ,'Meilani.Dixon@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'Camden','Frye' ,'Camden.Frye@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'Raya','Vincent' ,'Raya.Vincent@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'Aarav','Vasquez' ,'Aarav.Vasquez@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'Rose','Foster' ,'Rose.Foster@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'Kayden','Marshall' ,'Kayden.Marshall@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'Adalyn','Parks' ,'Adalyn.Parks@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'Gianni','Copeland' ,'Gianni.Copeland@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'Dayana','Durham' ,'Dayana.Durham@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'Kellen','Good' ,'Kellen.Good@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'Nathalia','Jacobson' ,'Nathalia.Jacobson@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (4, 'Legacy','Gomez' ,'Legacy.Gomez@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (5, 'Orion','Nelson' ,'Orion.Nelson@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (5, 'Everly','Arellano' ,'Everly.Arellano@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (5, 'Kellan','Benitez' ,'Kellan.Benitez@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (5, 'Aliza','Gates' ,'Aliza.Gates@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (5, 'Ermias','Solis' ,'Ermias.Solis@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (5, 'Miracle','Roman' ,'Miracle.Roman@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (5, 'Kian','Cortes' ,'Kian.Cortes@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (5, 'Lea','Melton' ,'Lea.Melton@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (5, 'Lennon','Washington' ,'Lennon.Washington@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (5, 'Ishaan','Horton' ,'Ishaan.Horton@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (5, 'Aitana','Valdez' ,'Aitana.Valdez@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (6, 'Kyler','Mueller' ,'Kyler.Mueller@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (6, 'Imani','Stokes' ,'Imani.Stokes@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (6, 'Santana','Hensley' ,'Santana.Hensley@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (6, 'Malaya','Martin' ,'Malaya.Martin@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (6, 'Mateo','Henson' ,'Mateo.Henson@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (6, 'Kinslee','Holmes' ,'Kinslee.Holmes@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (6, 'King','Palacios' ,'King.Palacios@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (6, 'Bria','Sanford' ,'Bria.Sanford@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (6, 'Truett','Montoya' ,'Truett.Montoya@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (6, 'Kamryn','Bowen' ,'Kamryn.Bowen@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (6, 'Trevor','Arellano' ,'Trevor.Arellano@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (6, 'Faye','Berger' ,'Faye.Berger@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (6, 'Byron','Zavala' ,'Byron.Zavala@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (6, 'Liv','Barron' ,'Liv.Barron@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (6, 'Dustin','Bennett' ,'Dustin.Bennett@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (6, 'Josephine','Lopez' ,'Josephine.Lopez@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (6, 'Michael','McBride' ,'Michael.McBride@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (6, 'Kelsey','Ray' ,'Kelsey.Ray@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (6, 'Arlo','Dudley' ,'Arlo.Dudley@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (6, 'Hadleigh','Rogers' ,'Hadleigh.Rogers@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (6, 'Colton','Barber' ,'Colton.Barber@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (6, 'Cassidy','Johns' ,'Cassidy.Johns@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (7, 'Joziah','Cobb' ,'Joziah.Cobb@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (7, 'Aviana','Vasquez' ,'Aviana.Vasquez@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (7, 'Rowan','Banks' ,'Rowan.Banks@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (7, 'Cali','Ballard' ,'Cali.Ballard@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (7, 'Kenzo','Blackburn' ,'Kenzo.Blackburn@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (7, 'Frida','Wang' ,'Frida.Wang@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (7, 'Cohen','Watkins' ,'Cohen.Watkins@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (7, 'Lola','Moore' ,'Lola.Moore@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (7, 'Levi','Russell' ,'Levi.Russell@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (7, 'Raelynn','Kramer' ,'Raelynn.Kramer@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (7, 'Kylan','Murillo' ,'Kylan.Murillo@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (7, 'Mikaela','Bond' ,'Mikaela.Bond@nomail.org','999-999-9999' );
-INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell ) Values (7, 'Roger','Fry' ,'7. Roger.Fry@nomail.org','999-999-9999' );
 
-truncate table public.companies RESTART IDENTITY CASCADE;
+-- sales/america
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Margaret','Wilson' ,'Margaret.Wilson@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Daniel','Hodges' ,'Daniel.Hodges@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Eve','Roach' ,'Eve.Roach@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Caspian','Gould' ,'Caspian.Gould@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Violeta','Morales' ,'Violeta.Morales@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Aaron','Sweeney' ,'Aaron.Sweeney@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Yara','Carroll' ,'Yara.Carroll@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Oscar','Sexton' ,'Oscar.Sexton@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Ellen','Thornton' ,'Ellen.Thornton@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Malik','Davis' ,'Malik.Davis@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Mia','Mathis' ,'Mia.Mathis@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Elaina','Vincent' ,'Elaina.Vincent@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Aarav','Escobar' ,'Aarav.Escobar@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Juelz','Moon' ,'Juelz.Moon@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Naya','Contreras' ,'Naya.Contreras@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Emilio','Cook' ,'Emilio.Cook@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Aaliyah','Lamb' ,'Aaliyah.Lamb@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Kaysen','White' ,'Kaysen.White@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Layla','Anderson' ,'Layla.Anderson@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Jacob','Swanson' ,'Jacob.Swanson@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Helen','House' ,'Helen.House@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Yehuda','Salas' ,'Yehuda.Salas@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Amber','Landry' ,'Amber.Landry@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Jaxx','Ashley' ,'Jaxx.Ashley@nomail.org','999-999-9999', 2 );
+-- sales/africa
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Gustavo','Wilcox' ,'Gustavo.Wilcox@nomail.org','999-999-9999', 1 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Ashlyn','Grimes' ,'Ashlyn.Grimes@nomail.org','999-999-9999', 1 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Harlan','Gutierrez' ,'Harlan.Gutierrez@nomail.org','999-999-9999', 1 );
+-- sales/asia
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Savannah','Perez' ,'Savannah.Perez@nomail.org','999-999-9999', 3 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Owen','Marshall' ,'Owen.Marshall@nomail.org','999-999-9999', 3 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Adalyn','Harrington' ,'Adalyn.Harrington@nomail.org','999-999-9999', 3 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Omari','Maldonado' ,'Omari.Maldonado@nomail.org','999-999-9999', 3 );
+-- sales/europe
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Pablo','Patton' ,'Pablo.Patton@nomail.org','999-999-9999', 4 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Lorelei','Knox' ,'Lorelei.Knox@nomail.org','999-999-9999', 4 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Valentin','Ochoa' ,'Valentin.Ochoa@nomail.org','999-999-9999', 4 );
+-- sales/Oceania
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Khalani','Mayo' ,'Khalani.Mayo@nomail.org','999-999-9999', 5 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Jericho','Lloyd' ,'Jericho.Lloyd@nomail.org','999-999-9999', 5 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (1, 'Emely','Page' ,'Emely.Page@nomail.org','999-999-9999', 5 );
+
+-- marketing
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (2, 'Luciana','Stokes' ,'Luciana.Stokes@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (2, 'Santana','Bryan' ,'Santana.Bryan@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (2, 'Meredith','Dennis' ,'Meredith.Dennis@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (2, 'Emanuel','Campbell' ,'Emanuel.Campbell@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (2, 'Addison','Blackwell' ,'Addison.Blackwell@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (2, 'Marcellus','Maldonado' ,'Marcellus.Maldonado@nomail.org','999-999-9999', 3 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (2, 'Elaina','Allen' ,'Elaina.Allen@nomail.org','999-999-9999', 1 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (2, 'Carter','Montes' ,'Carter.Montes@nomail.org','999-999-9999', 3 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (2, 'Roselyn','Enriquez' ,'Roselyn.Enriquez@nomail.org','999-999-9999', 4 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (2, 'Elisha','Waters' ,'Elisha.Waters@nomail.org','999-999-9999', 5 );
+
+-- support
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (3, 'Erin','Benjamin' ,'Erin.Benjamin@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (3, 'Kyro','Steele' ,'Kyro.Steele@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (3, 'Rylie','Schroeder' ,'Rylie.Schroeder@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (3, 'Izaiah','Mosley' ,'Izaiah.Mosley@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (3, 'Zaniyah','Valdez' ,'Zaniyah.Valdez@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (3, 'Kyler','Rosales' ,'Kyler.Rosales@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (3, 'Kinley','Griffith' ,'Kinley.Griffith@nomail.org','999-999-9999', 1 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (3, 'Franklin','Gates' ,'Franklin.Gates@nomail.org','999-999-9999', 1 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (3, 'Melina','Lawson' ,'Melina.Lawson@nomail.org','999-999-9999', 3 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (3, 'Lane','Aguirre' ,'Lane.Aguirre@nomail.org','999-999-9999', 3 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (3, 'Ariah','McKenzie' ,'Ariah.McKenzie@nomail.org','999-999-9999', 4 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (3, 'Scott','Aguilar' ,'Scott.Aguilar@nomail.org','999-999-9999', 5 );
+
+-- product
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'Josie','Blackwell' ,'Josie.Blackwell@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'Marcellus','Wilkinson' ,'Marcellus.Wilkinson@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'Siena','Murillo' ,'Siena.Murillo@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'Lance','Portillo' ,'Lance.Portillo@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'Nathalie','Molina' ,'Nathalie.Molina@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'Prince','Garza' ,'Prince.Garza@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'River','Tyler' ,'River.Tyler@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'Emmitt','May' ,'Emmitt.May@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'Adriana','Glass' ,'Adriana.Glass@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'Allan','Richards' ,'Allan.Richards@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'Trinity','Glass' ,'Trinity.Glass@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'Allan','Knox' ,'Allan.Knox@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'Kallie','Lin' ,'Kallie.Lin@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'Conor','Pham' ,'Conor.Pham@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'Everleigh','Moore' ,'Everleigh.Moore@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'Levi','Sampson' ,'Levi.Sampson@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'Meilani','Dixon' ,'Meilani.Dixon@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'Camden','Frye' ,'Camden.Frye@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'Raya','Vincent' ,'Raya.Vincent@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'Aarav','Vasquez' ,'Aarav.Vasquez@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'Rose','Foster' ,'Rose.Foster@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'Kayden','Marshall' ,'Kayden.Marshall@nomail.org','999-999-9999', 1 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'Adalyn','Parks' ,'Adalyn.Parks@nomail.org','999-999-9999', 1 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'Gianni','Copeland' ,'Gianni.Copeland@nomail.org','999-999-9999', 3 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'Dayana','Durham' ,'Dayana.Durham@nomail.org','999-999-9999', 3 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'Kellen','Good' ,'Kellen.Good@nomail.org','999-999-9999', 4 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'Nathalia','Jacobson' ,'Nathalia.Jacobson@nomail.org','999-999-9999', 4 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (4, 'Legacy','Gomez' ,'Legacy.Gomez@nomail.org','999-999-9999', 5 );
+
+-- clerical
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (5, 'Orion','Nelson' ,'Orion.Nelson@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (5, 'Everly','Arellano' ,'Everly.Arellano@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (5, 'Kellan','Benitez' ,'Kellan.Benitez@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (5, 'Aliza','Gates' ,'Aliza.Gates@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (5, 'Ermias','Solis' ,'Ermias.Solis@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (5, 'Miracle','Roman' ,'Miracle.Roman@nomail.org','999-999-9999', 1 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (5, 'Kian','Cortes' ,'Kian.Cortes@nomail.org','999-999-9999', 3 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (5, 'Lea','Melton' ,'Lea.Melton@nomail.org','999-999-9999', 3 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (5, 'Lennon','Washington' ,'Lennon.Washington@nomail.org','999-999-9999', 4 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (5, 'Ishaan','Horton' ,'Ishaan.Horton@nomail.org','999-999-9999', 4 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (5, 'Aitana','Valdez' ,'Aitana.Valdez@nomail.org','999-999-9999', 5 );
+
+-- finanice
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (6, 'Kyler','Mueller' ,'Kyler.Mueller@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (6, 'Imani','Stokes' ,'Imani.Stokes@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (6, 'Santana','Hensley' ,'Santana.Hensley@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (6, 'Malaya','Martin' ,'Malaya.Martin@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (6, 'Mateo','Henson' ,'Mateo.Henson@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (6, 'Kinslee','Holmes' ,'Kinslee.Holmes@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (6, 'King','Palacios' ,'King.Palacios@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (6, 'Bria','Sanford' ,'Bria.Sanford@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (6, 'Truett','Montoya' ,'Truett.Montoya@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (6, 'Kamryn','Bowen' ,'Kamryn.Bowen@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (6, 'Trevor','Arellano' ,'Trevor.Arellano@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (6, 'Faye','Berger' ,'Faye.Berger@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (6, 'Byron','Zavala' ,'Byron.Zavala@nomail.org','999-999-9999', 4 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (6, 'Liv','Barron' ,'Liv.Barron@nomail.org','999-999-9999', 4 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (6, 'Dustin','Bennett' ,'Dustin.Bennett@nomail.org','999-999-9999', 5 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (6, 'Josephine','Lopez' ,'Josephine.Lopez@nomail.org','999-999-9999', 5 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (6, 'Michael','McBride' ,'Michael.McBride@nomail.org','999-999-9999', 4 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (6, 'Kelsey','Ray' ,'Kelsey.Ray@nomail.org','999-999-9999', 4 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (6, 'Arlo','Dudley' ,'Arlo.Dudley@nomail.org','999-999-9999', 3 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (6, 'Hadleigh','Rogers' ,'Hadleigh.Rogers@nomail.org','999-999-9999', 3 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (6, 'Colton','Barber' ,'Colton.Barber@nomail.org','999-999-9999', 1 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (6, 'Cassidy','Johns' ,'Cassidy.Johns@nomail.org','999-999-9999', 1 );
+
+-- hr
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (7, 'Joziah','Cobb' ,'Joziah.Cobb@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (7, 'Aviana','Vasquez' ,'Aviana.Vasquez@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (7, 'Rowan','Banks' ,'Rowan.Banks@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (7, 'Cali','Ballard' ,'Cali.Ballard@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (7, 'Kenzo','Blackburn' ,'Kenzo.Blackburn@nomail.org','999-999-9999', 2 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (7, 'Frida','Wang' ,'Frida.Wang@nomail.org','999-999-9999', 5 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (7, 'Cohen','Watkins' ,'Cohen.Watkins@nomail.org','999-999-9999', 5 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (7, 'Lola','Moore' ,'Lola.Moore@nomail.org','999-999-9999', 4 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (7, 'Levi','Russell' ,'Levi.Russell@nomail.org','999-999-9999', 4 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (7, 'Raelynn','Kramer' ,'Raelynn.Kramer@nomail.org','999-999-9999', 3 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (7, 'Kylan','Murillo' ,'Kylan.Murillo@nomail.org','999-999-9999', 3 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (7, 'Mikaela','Bond' ,'Mikaela.Bond@nomail.org','999-999-9999', 1 );
+INSERT INTO public.employees (employee_roles_id, name_first, name_last, email, phone_cell, region_id ) Values (7, 'Roger','Fry' ,'7. Roger.Fry@nomail.org','999-999-9999', 1 );
+
+
+ALTER SEQUENCE public.companies_company_id_seq RESTART WITH 1;
+truncate table public.companies RESTART IDENTITY;
 INSERT INTO public.companies (company_name, ticker, sector_id, industry_id, number_of_employees, market_cap, market_segments_id ) values ('Walmart','WMT',57,9,2100000,484852.8,2 );
 INSERT INTO public.companies (company_name, ticker, sector_id, industry_id, number_of_employees, market_cap, market_segments_id ) values ('Amazon','AMZN',57,13,1525000,1873675.8,3 );
 INSERT INTO public.companies (company_name, ticker, sector_id, industry_id, number_of_employees, market_cap, market_segments_id ) values ('Apple','AAPL',63,4,161000,2647973.8,3 );

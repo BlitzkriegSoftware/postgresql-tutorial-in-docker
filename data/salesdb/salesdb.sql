@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
--- \restrict rKsK7nDjuMa6K5n0xSfzkal1gFWujiLc6ZQ4izagcJh6FWPit9r9ChO9D0q0tmd
+\restrict ycR22qBwQMhHyAkAibMafVHs8GOgg6CwrJjAsgi9cszmI5rGww4007UasG9lPTX
 
 -- Dumped from database version 17.6 (Debian 17.6-1.pgdg13+1)
 -- Dumped by pg_dump version 17.6 (Debian 17.6-1.pgdg13+1)
@@ -18,21 +18,26 @@ SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
-SET default_tablespace = '';
-SET default_table_access_method = heap;
 
 --
 -- Name: public; Type: SCHEMA; Schema: -; Owner: pg_database_owner
 --
 
--- CREATE SCHEMA public;
--- ALTER SCHEMA public OWNER TO pg_database_owner;
+CREATE SCHEMA public;
+
+
+ALTER SCHEMA public OWNER TO pg_database_owner;
 
 --
 -- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: pg_database_owner
 --
 
--- COMMENT ON SCHEMA public IS 'standard public schema';
+COMMENT ON SCHEMA public IS 'standard public schema';
+
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
 
 --
 -- Name: companies; Type: TABLE; Schema: public; Owner: postgres
@@ -125,7 +130,8 @@ CREATE TABLE public.employees (
     phone_cell character varying(64),
     inserted_on timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
     inserted_by character varying(127) DEFAULT 'system'::character varying NOT NULL,
-    is_deleted boolean DEFAULT false
+    is_deleted boolean DEFAULT false,
+    region_id bigint DEFAULT 2
 );
 
 
@@ -453,6 +459,63 @@ ALTER SEQUENCE public.sectors_sector_id_seq OWNED BY public.sectors.sector_id;
 
 
 --
+-- Name: vw_companies; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW public.vw_companies AS
+ SELECT comp.company_id,
+    comp.company_name,
+    comp.ticker,
+    sect.sector_name,
+    indu.industry_name,
+    mark.market_segments_name,
+    comp.number_of_employees,
+    comp.market_cap
+   FROM (((public.companies comp
+     JOIN public.sectors sect ON ((comp.sector_id = sect.sector_id)))
+     JOIN public.market_segments mark ON ((comp.market_segments_id = mark.market_segments_id)))
+     JOIN public.industries indu ON ((comp.industry_id = indu.industry_id)))
+  WHERE (comp.is_deleted = false);
+
+
+ALTER VIEW public.vw_companies OWNER TO postgres;
+
+--
+-- Name: vw_employees; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW public.vw_employees AS
+ SELECT reg.regions_name,
+    rol.role_name,
+    emp.name_first,
+    emp.name_last,
+    emp.email,
+    emp.phone_cell
+   FROM ((public.employees emp
+     JOIN public.regions reg ON ((emp.region_id = reg.regions_id)))
+     JOIN public.employee_roles rol ON ((emp.employee_roles_id = rol.employee_roles_id)))
+  WHERE (emp.is_deleted = false);
+
+
+ALTER VIEW public.vw_employees OWNER TO postgres;
+
+--
+-- Name: vw_products; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW public.vw_products AS
+ SELECT pt.product_types_name,
+    prod.products_id,
+    prod.product_name,
+    prod.product_description
+   FROM (public.products prod
+     JOIN public.product_types pt ON ((prod.product_types_id = pt.product_types_id)))
+  WHERE (prod.is_deleted = false);
+
+
+ALTER VIEW public.vw_products OWNER TO postgres;
+
+--
 -- Name: companies company_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -651,6 +714,14 @@ ALTER TABLE ONLY public.products
 
 
 --
+-- Name: employees region_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.employees
+    ADD CONSTRAINT region_fk FOREIGN KEY (region_id) REFERENCES public.regions(regions_id) NOT VALID;
+
+
+--
 -- Name: companies sector_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -662,5 +733,5 @@ ALTER TABLE ONLY public.companies
 -- PostgreSQL database dump complete
 --
 
--- \unrestrict rKsK7nDjuMa6K5n0xSfzkal1gFWujiLc6ZQ4izagcJh6FWPit9r9ChO9D0q0tmd
+\unrestrict ycR22qBwQMhHyAkAibMafVHs8GOgg6CwrJjAsgi9cszmI5rGww4007UasG9lPTX
 

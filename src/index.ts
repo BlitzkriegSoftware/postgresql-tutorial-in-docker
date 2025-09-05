@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * index.js - Entry Point
  * @name   Index
@@ -14,24 +12,23 @@ const DEFAULT_POSTGRES = 'postgresql://postgres:password123-@localhost/salesdb';
 /**
  * Includes
  */
-const path = require('path');
-const { exitCode } = require('node:process');
-import { lookupService } from 'node:dns';
-import { Client } from 'pg';
+
+// import process from 'node:process';
+import pg from 'pg';
+import yargs from 'yargs/yargs'; // Correct import for the yargs instance
+import { hideBin } from 'yargs/helpers'; // For parsing process.argv
 
 /**
- * Where is the app root folder?
- * @global
+ * Event Handler
  */
-global.appRoot = path.resolve(__dirname);
 
 /**
  * handle SIGQUIT signals gracefully
  */
-process.on('SIGQUIT', () => {
-  const msg = 'Received SIGQUIT, performing graceful shutdown.';
-  shutdown(-2, msg);
-});
+// process.on('SIGQUIT', () => {
+//   const msg = 'Received SIGQUIT, performing graceful shutdown.';
+//   shutdown(-2, msg);
+// });
 
 /**
  * Orderly shutdown
@@ -40,25 +37,52 @@ process.on('SIGQUIT', () => {
  * @param {string} msg
  * @returns {void}
  */
-function shutdown(exitcode, msg) {
-  global.continueWork = false;
-  if (!Utility.isNumber(exitcode)) {
-    exitCode = 0;
+function shutdown(exitcode: number, msg: string) {
+  if (!isNumber(exitcode)) {
+    // process.exitCode = 0;
   }
-  if (!Utility.isBlank(msg)) {
+  if (!isBlank(msg)) {
     console.log(JSON.stringify(msg));
   }
 
-  process.exit(exitcode);
+  // process.exit(exitcode);
+}
+
+// Utility
+
+/**
+ * True if is falsy or just whitespace
+ * @name isBlank
+ * @function
+ * @param {String} str
+ * @returns {Boolean} isNullOrWhitespace
+ */
+function isBlank(text: any) {
+  return !text || /^\s*$/.test(text);
 }
 
 /**
- * Message callback prototype
+ * Tests to see if passed argument is a number
+ * @name #isNumber
  * @function
- * @param {*} message
- * @returns {void}
+ * @param {*} value
+ * @returns {boolean}
  */
-function messageCallback(message) {}
+function isNumber(value: any) {
+  return typeof value === 'number';
+}
+
+/*
+ * Types
+ */
+
+/**
+ * type: Employee Region
+ */
+type EmployeeRegion = {
+  EmployeeId: number;
+  RegionId: number;
+};
 
 /*
  * SQL Functions
@@ -73,7 +97,7 @@ function messageCallback(message) {}
  * @param {*} client - PG Client
  * @returns result -- rows of employee, region ids
  */
-async function getSalesPeople(client) {
+async function getSalesPeople(client: pg.Client): Promise<pg.QueryResult<any>> {
   const sql =
     'select employee_id, region_id from public.employees where (is_deleted = false) and (employee_roles_id = 1);';
   const result = await client.query(sql);
@@ -85,7 +109,7 @@ async function getSalesPeople(client) {
  * @param {*} client - PG Client
  * @returns result -- rows of customer ids
  */
-async function getCompanies(client) {
+async function getCompanies(client: pg.Client): Promise<pg.QueryResult<any>> {
   const sql =
     'select company_id from public.companies where (is_deleted = false)';
   const result = await client.query(sql);
@@ -97,7 +121,7 @@ async function getCompanies(client) {
  * @param {*} client - PG Client
  * @returns result - rows of incentive ids
  */
-async function getIncentives(client) {
+async function getIncentives(client: pg.Client): Promise<pg.QueryResult<any>> {
   const sql =
     'select incentive_id from public.incentives where (is_deleted = false)';
   const result = await client.query(sql);
@@ -109,7 +133,7 @@ async function getIncentives(client) {
  * @param {*} client - PG Client
  * @returns result - rows of products
  */
-async function getProducts(client) {
+async function getProducts(client: pg.Client): Promise<pg.QueryResult<any>> {
   const sql =
     'select products_id from public.products where (is_deleted = false)';
   const result = await client.query(sql);
@@ -121,7 +145,7 @@ async function getProducts(client) {
  * @param {*} client - PG Client
  * @returns result - rows of sales status
  */
-async function getSalesStatus(client) {
+async function getSalesStatus(client: pg.Client): Promise<pg.QueryResult<any>> {
   const sql =
     'select sales_order_status_id from public.sales_order_status where (is_deleted = false)';
   const result = await client.query(sql);
@@ -139,7 +163,7 @@ async function getSalesStatus(client) {
  * @param {number} max
  * @returns {number} - between inclusive
  */
-function getRandomNumber(min, max) {
+function getRandomNumber(min: number, max: number): number {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -152,7 +176,7 @@ function getRandomNumber(min, max) {
  * @param {Date} endDate
  * @returns {Date} - Random Date
  */
-function getRandomDate(startDate, endDate) {
+function getRandomDate(startDate: Date, endDate: Date): Date {
   // Convert dates to timestamps
   const startTimestamp = startDate.getTime();
   const endTimestamp = endDate.getTime();
@@ -176,7 +200,7 @@ function getRandomDate(startDate, endDate) {
  * @param {number} indexColumn - Column to use (default 0)
  * @returns {*} - Value
  */
-function getRandomResult(result, indexColumn = 0) {
+function getRandomResult(result: pg.QueryResult<any>, indexColumn: number = 0) {
   const max = result.rowCount;
   const index = getRandomNumber(0, max - 1);
   let value = result.rows[index][indexColumn];
@@ -188,7 +212,7 @@ function getRandomResult(result, indexColumn = 0) {
  * @param {*} incentives  - PG.RESULT
  * @returns {number} - incentive_id (strong bias to 1 (none))
  */
-function getBiasedIncentive(incentives) {
+function getBiasedIncentive(incentives: pg.QueryResult<any>): number {
   const NONE = 1;
   const ODDS = 901;
   let incentive_id = NONE;
@@ -199,11 +223,30 @@ function getBiasedIncentive(incentives) {
 }
 
 /**
+ * Get Employee Region (random)
+ * @param employee - QueryResult
+ * @returns {EmployeeRegion}
+ */
+function getEmployeeRegion(employee: pg.QueryResult<any>): EmployeeRegion {
+  const max = employee.rowCount || 1;
+  const index = getRandomNumber(0, max - 1);
+  let row = employee.rows[index];
+
+  const employee_id = row[0];
+  const region_id = row[1];
+
+  return {
+    EmployeeId: employee_id,
+    RegionId: region_id
+  };
+}
+
+/**
  * Get Biased Incentive
  * @param {*} incentives  - PG.RESULT
  * @returns {number} - incentive_id (strong bias to 1 (none))
  */
-function getBiasedOrderStatus(orderStatus) {
+function getBiasedOrderStatus(orderStatus: pg.QueryResult<any>): number {
   const DRAFT = 1;
   const ODDS = 701;
   let order_status_id = DRAFT;
@@ -218,7 +261,7 @@ function getBiasedOrderStatus(orderStatus) {
  * @param {number} year
  * @returns {Date} - Random date for a year
  */
-function getRandomDateForYear(year) {
+function getRandomDateForYear(year: number): Date {
   const beginDate = new Date(`${year}-1-1`);
   const endDate = new Date(`${year}-12-31`);
   const rDate = getRandomDate(beginDate, endDate);
@@ -241,14 +284,14 @@ function getRandomDateForYear(year) {
  * @returns {number} - sales_order_id (PK)
  */
 async function makeSalesOrder(
-  client,
-  employee_id,
-  company_id,
-  incentive_id,
-  sales_order_date,
-  sales_order_status_id,
-  region_id
-) {
+  client: pg.Client,
+  employee_id: number,
+  company_id: number,
+  incentive_id: number,
+  sales_order_date: Date,
+  sales_order_status_id: number,
+  region_id: number
+): Promise<number> {
   const query = {
     text:
       'INSERT INTO public.sales_orders(employee_id, company_id, incentive_id, sales_order_date, sales_order_status_id, region_id)' +
@@ -276,11 +319,11 @@ async function makeSalesOrder(
  * @returns {number} - sales_order_detail_id (pk)
  */
 async function makeSalesOrderDetails(
-  client,
-  sales_order_id,
-  quantity,
-  products_id
-) {
+  client: pg.Client,
+  sales_order_id: number,
+  quantity: number,
+  products_id: Date
+): Promise<number> {
   const query = {
     text:
       'INSERT INTO public.sales_orders_details( sales_order_id, quantity, products_id)' +
@@ -301,10 +344,9 @@ async function main() {
   /**
    * Argument parsing
    */
-  const yargs = require('yargs');
 
   // Command line args
-  const commandlineargs = yargs
+  const commandlineargs = yargs(hideBin(process.argv))
     .option('c', {
       alias: 'connection',
       describe: 'connection string',
@@ -324,14 +366,15 @@ async function main() {
       type: 'number',
       demandOption: false,
       default: 2024
-    }).argv;
+    })
+    .parseSync();
 
   // see: https://node-postgres.com/apis/client#new-client
   const postgres_config = {
     connectionString: commandlineargs.connection
   };
 
-  let client = new Client(postgres_config);
+  let client = new pg.Client(postgres_config);
 
   try {
     await client.connect();
@@ -353,16 +396,16 @@ async function main() {
       const salesDate = getRandomDateForYear(commandlineargs.year);
       const incentive_id = getBiasedIncentive(incentives);
       const company_id = getRandomResult(companies, 1);
-      const employee_id = getRandomResult(sales, 1);
       const sales_order_status_id = getBiasedOrderStatus(orderStatus);
-
+      const cr = getEmployeeRegion(sales);
       const sales_order_id = await makeSalesOrder(
         client,
-        employee_id,
+        cr.EmployeeId,
         company_id,
         incentive_id,
         salesDate,
-        sales_order_status_id
+        sales_order_status_id,
+        cr.RegionId
       );
       console.log(
         `= Sales Order Id: ${sales_order_id}, Company: ${company_id}, By: ${employee_id}, on: ${salesDate}, Status: ${sales_order_status_id}`

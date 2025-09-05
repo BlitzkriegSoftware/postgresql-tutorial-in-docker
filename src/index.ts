@@ -297,7 +297,7 @@ async function makeSalesOrder(
   const query = {
     text:
       'INSERT INTO public.sales_orders(employee_id, company_id, incentive_id, sales_order_date, sales_order_status_id, region_id)' +
-      ' VALUES ($1, $2, $3, $4, $5, $6);',
+      ' VALUES ($1, $2, $3, $4, $5, $6) RETURNING sales_order_id;',
     values: [
       employee_id, // $1
       company_id, // $2
@@ -329,7 +329,7 @@ async function makeSalesOrderDetails(
   const query = {
     text:
       'INSERT INTO public.sales_orders_details(sales_order_id, quantity, products_id)' +
-      ' VALUES ($1, $2, $3);',
+      ' VALUES ($1, $2, $3) RETURNING sales_orders_details_id;',
     values: [sales_order_id, quantity, products_id]
   };
   const res = await client.query(query);
@@ -411,12 +411,12 @@ async function main() {
         cr.RegionId
       );
       console.log(
-        `= Sales Order Id: ${sales_order_id}, Company: ${company_id}, By: ${employee_id}, on: ${salesDate}, Status: ${sales_order_status_id}`
+        `= Sales Order Id: ${sales_order_id}, Company: ${company_id}, By: ${cr.EmployeeId} in ${cr.RegionId}, on: ${salesDate}, Status: ${sales_order_status_id}`
       );
 
       const max_lines = getRandomNumber(1, MAX_PRODUCTS_PER_ORDER);
       for (let j = 0; j < max_lines; j++) {
-        const product_id = getRandomDate(products, 1);
+        const product_id = getRandomResult(products, 'product_id');
         const quantity = getRandomNumber(1, MAX_QUANTITY);
 
         const sales_order_detail_id = await makeSalesOrderDetails(

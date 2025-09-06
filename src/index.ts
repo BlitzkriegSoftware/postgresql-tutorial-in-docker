@@ -14,7 +14,7 @@ const DEFAULT_POSTGRES = 'postgresql://postgres:password123-@localhost/salesdb';
  */
 
 // import process from 'node:process';
-import pg from 'pg';
+import * as pg from 'pg';
 import yargs from 'yargs/yargs'; // Correct import for the yargs instance
 import { hideBin } from 'yargs/helpers'; // For parsing process.argv
 

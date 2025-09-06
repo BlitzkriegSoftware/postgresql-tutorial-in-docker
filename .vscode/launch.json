@@ -9,7 +9,15 @@
       "name": "Run",
       "request": "launch",
       "cwd": "${workspaceFolder}",
-      "program": "${workspaceFolder}\\src\\index.ts"
+      "program": "${workspaceFolder}\\src\\index.ts",
+      "args": [
+        "-c",
+        "postgresql://postgres:password123-@localhost/salesdb",
+        "-n",
+        "500",
+        "-y",
+        "2024"
+      ]
     }
   ]
 }

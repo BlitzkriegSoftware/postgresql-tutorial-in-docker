@@ -2,19 +2,15 @@
   "name": "mksales",
   "version": "1.0.0",
   "description": "Make Sales Data in Postgres",
+  "type": "module",
   "keywords": [
     "postgres",
     "sales",
     "data",
     "generator"
   ],
-  "repository": {
-    "type": "git",
-    "url": "."
-  },
   "license": "MIT",
   "author": "stuart williams",
-  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "jest"

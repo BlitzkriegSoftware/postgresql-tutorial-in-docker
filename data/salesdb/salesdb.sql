@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict gZ6awhUwIzfTkcJuFpDt8bEr4JGj6jej7PTrZqnJQITEpRskMUnphgh4lSUdaMM
+\restrict H2ZNf1fJUMSTo8t4ZPSP3aTepnAe5xMTuSn8RwefV7PLf0KYX1fwFS4ORc6nkBw
 
 -- Dumped from database version 17.6 (Debian 17.6-1.pgdg13+1)
 -- Dumped by pg_dump version 17.6 (Debian 17.6-1.pgdg13+1)
@@ -973,5 +973,5 @@ ALTER TABLE ONLY public.companies
 -- PostgreSQL database dump complete
 --
 
-\unrestrict gZ6awhUwIzfTkcJuFpDt8bEr4JGj6jej7PTrZqnJQITEpRskMUnphgh4lSUdaMM
+\unrestrict H2ZNf1fJUMSTo8t4ZPSP3aTepnAe5xMTuSn8RwefV7PLf0KYX1fwFS4ORc6nkBw
 

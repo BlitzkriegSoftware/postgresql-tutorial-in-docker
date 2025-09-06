@@ -11,7 +11,7 @@ This presumes, you have already fully setup the `salesdb` by running the `.\data
 
 ```powershell
 # With additional parameters
-.\src\generate_data.ps1
+.\src\generate_data.ps1 -Year 2022 -Number 50
 ```
 
 ## Introduction

@@ -4,9 +4,25 @@ This presumes, you have already fully setup the `salesdb` by running the `.\data
 
 ## How to run
 
+```powershell
+# With default parameters
+.\src\generate_data.ps1
+```
+
+```powershell
+# With additional parameters
+.\src\generate_data.ps1
+```
+
 ## Introduction
 
 Generates sales data in postgres db
+
+## Prerequisites
+
+- NPM v11+
+- Node v24+
+- Powershell 7+
 
 ## Command line Arguments
 

@@ -1,3 +1,15 @@
+<#
+    .SYNOPSIS
+       Stop PostgreSQL on Docker
+
+    .DESCRIPTION
+        See above
+    
+    .INPUTS
+        none
+
+    .OUTPUTS
+#>
 [string]$NAME='postgressvr'
 
 # Dispose of any old running ones

@@ -1,7 +1,6 @@
 <#
-	
     .SYNOPSIS
-       Start PostgreSQL
+       Start PostgreSQL on Docker
 
     .DESCRIPTION
         See above
@@ -21,6 +20,7 @@ Import-Module Microsoft.PowerShell.Utility
 [string]$USERNAME='postgres'
 [string]$PASSWORD='password123-'
 [string]$VOL="/var/lib/postgresql/data"
+[string]$SRC="/var/lib/postgresql/src"
 
 function Get-DockerRunning {
 
@@ -50,7 +50,8 @@ if(! $da) {
 	return 1
 }
 
-[string]$dbPath = Join-Path -Path $pwd -ChildPath "data"
+[string]$dbPath = Join-Path -Path $PSScriptRoot -ChildPath "data"
+[string]$srcPath = Join-Path -Path $PSScriptRoot -ChildPath "src"
 
 $null = (setx POSTGRES_USER "${USERNAME}") 2> $null
 $null = (setx POSTGRES_PASSWORD "${PASSWORD}") 2> $null
@@ -66,6 +67,6 @@ $null = (docker pull $IMAGE) 2> $null
 $pgDir =  Join-Path -Path $dbPath -ChildPath "pgdata"
 $null = (Remove-Item -Path $pgDir -Recurse -Force) 2> $null
 
-docker run -d -e "POSTGRES_USER=${USERNAME}" -e POSTGRES_PASSWORD="${PASSWORD}" -e PGDATA='/var/lib/postgresql/data/pgdata' --name="${NAME}" -p "${PORT}:${PORT}" -v "${dbPath}:${VOL}" postgres
+docker run -d -e "POSTGRES_USER=${USERNAME}" -e POSTGRES_PASSWORD="${PASSWORD}" -e PGDATA='/var/lib/postgresql/data/pgdata' --name="${NAME}" -p "${PORT}:${PORT}" -v "${dbPath}:${VOL}" -v "${srcPath}:${SRC}" postgres
 
 Write-Output "PostgreSql running on ${PORT} as ${USERNAME} with ${PASSWORD}"

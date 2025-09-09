@@ -37,6 +37,7 @@ if($npm_ver -lt $NPM_MIN -or $node_ver -lt $NODE_MIN)
 Push-Location $PSScriptRoot
 
 # restore packages
+$NULL = (Remove-Item -Path "$PSScriptRoot\node_modules\" -Recurse) 2> $null
 $NULL = (npm i) 2> $null
 
 # run script

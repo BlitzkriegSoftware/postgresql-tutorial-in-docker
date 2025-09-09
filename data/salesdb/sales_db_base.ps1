@@ -1,11 +1,6 @@
 <#
-    Run the base DB setup on Docker image
-#>
-
-<#
-	
     .SYNOPSIS
-       Start PostgreSQL Bash Session
+       Create salesdb, schema, and seed data
 
     .DESCRIPTION
         See above

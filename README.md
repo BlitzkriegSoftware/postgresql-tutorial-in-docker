@@ -23,13 +23,14 @@
 1. Creates a new database `salesdb`
 2. Creates schema (see below)
 3. Creates seed data
-  * Look up tables
-  * Employees
-  * Products
-  * Incentives
-  * etc.
 
-### Method 1: All in one Powershell 
+- Look up tables
+- Employees
+- Products
+- Incentives
+- etc.
+
+### Method 1: All in one Powershell
 
 ```powershell
 .\data\salesdb\sales_db_base.ps1
@@ -79,3 +80,39 @@ For more see: [Instructions](src/README.md)
 ```powershell
 .\stop-pg.ps1
 ```
+
+## Connection Infomation
+
+> Assuming you are running PostgreSQL in Docker using our defaults
+
+### Properties List
+
+- Server: `localhost`
+- Username: `postgres` (default)
+- Default Database: `postgres` (default)
+- Schema: `public` (default)
+- Password: `password123-`
+- Demo Data Database: `salesdb`
+- Port: `5432` (default)
+
+### Connection String
+
+General pattern:
+
+- `postgresql://[user[:password]@][host][:port][/dbname][?param1=value1&param2=value2]`
+
+For this demo (salesdb):
+
+- `postgresql://postgres:password123-@localhost:5432/salesdb`
+
+## Folder locations on the container
+
+### Data Folders
+
+- The data folder: `/var/lib/postgresql/data/` which maps to `.\data`
+- Where the SQL Scripts etc, get mapped `/var/lib/postgresql/data/salesdb` which maps to `.\data\salesdb`
+- Where the postgres data files are `/var/lib/postgresql/data/pgdata` which `.\start-pg.ps1` recursively deletes to provide a clean start
+
+### Postgres `bin`
+
+- `/usr/lib/postgresql/17/bin`

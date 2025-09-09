@@ -47,7 +47,7 @@
 
 ## Sales DB Schema
 
-![diagram](data\salesdb\salesdb.pgerd.png)
+![diagram](data/salesdb/salesdb.pgerd.png)
 
 ## Generating some actual Sales Orders (and details)
 

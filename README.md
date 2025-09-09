@@ -72,7 +72,7 @@ generate_data.ps1 [[-Year] <string>] [[-Number] <int>]
 .\src\generate_data.ps1 -Year 2022 -Number 50
 ```
 
-For more see: [Instructions](src\README.md)
+For more see: [Instructions](src/README.md)
 
 ## stopping Postgres in Docker
 

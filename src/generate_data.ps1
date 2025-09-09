@@ -34,8 +34,12 @@ if($npm_ver -lt $NPM_MIN -or $node_ver -lt $NODE_MIN)
     return 1;
 }
 
+Push-Location $PSScriptRoot
+
 # restore packages
 $NULL = (npm i) 2> $null
 
 # run script
 npx ts-node index.ts -n="${Number}" -y="${Year}"
+
+Pop-Location
